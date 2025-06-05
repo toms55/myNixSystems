@@ -173,15 +173,13 @@ fonts.packages = with pkgs; [
 	nodejs
 	python3
 	tree-sitter
+	tree
 	lua
 	luajit
 	neofetch
 	vscode
 	rstudio
 	clang-tools
-
-	gtest
-	gcc
 
 	alacritty
 	zsh
