@@ -17,16 +17,10 @@
           ./nixos/configuration.nix
           ./nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager.useUserPackages = true;
-            home-manager.users.tom = { pkgs, ... }: {
-              home.username = "tom";
-              home.homeDirectory = "/home/tom";
-              home.stateVersion = "23.11";
-              programs.alacritty.enable = true;
-              xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
-            };
-          }
+          (import ./home.nix {
+            system = "linux";
+            username = "tom";
+          })
         ];
       };
     };
@@ -37,21 +31,14 @@
         modules = [
           ./darwin/configuration.nix
           home-manager.darwinModules.home-manager
-          {
-            home-manager.useUserPackages = true;
-            home-manager.users.tom = { pkgs, ... }: {
-              home.username = "tom";
-              home.homeDirectory = "/Users/tom";
-              home.stateVersion = "23.11";
-              programs.alacritty.enable = true;
-              xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
-            };
-          }
+          (import ./home.nix {
+            system = "darwin";
+            username = "tom";
+          })
         ];
       };
     };
   };
 }
-
 
 
