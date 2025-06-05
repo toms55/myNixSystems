@@ -1,9 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-{
+let
+  isDarwin = pkgs.stdenv.isDarwin;
+in {
   home = {
     username = "tom";
-    homeDirectory = "/Users/tom";
+    homeDirectory = if isDarwin then "/Users/tom" else "/home/tom";
     stateVersion = "23.11";
   };
 
@@ -12,6 +14,3 @@
 
   xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
 }
-
-
-
