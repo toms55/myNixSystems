@@ -1,18 +1,17 @@
-# home.nix
 { config, pkgs, ... }:
 
 {
-  # All Home Manager specific options should be nested under the 'home' attribute
   home = {
     username = "tom";
-    homeDirectory = if pkgs.stdenv.isDarwin
-                    then "/Users/tom"
-                    else "/home/tom";
-    stateVersion = "23.11"; # This should match your home-manager release branch
+    homeDirectory = "/Users/tom";
+    stateVersion = "23.11";
   };
 
-  # Other Home Manager programs and configurations can go here
+  programs.zsh.enable = true;
   programs.alacritty.enable = true;
-  xdg.configFile."alacritty/alacritty.toml".source =
-    ../config/alacritty.toml;
+
+  xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
 }
+
+
+

@@ -1,10 +1,13 @@
-{ config, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   system.stateVersion = 4;
 
   system.primaryUser = "tom";
   nixpkgs.config.allowUnfree = true;
+
+  users.users.tom = {
+    name = "tom";
+    home = "/Users/tom";
+  };
 
   system.defaults = {
     dock = {
@@ -29,10 +32,8 @@
   environment.systemPackages = with pkgs; [
     neovim
     git
-	  alacritty
-
-  	tree
-
+    alacritty
+    tree
     firefox
     discord
     spotify

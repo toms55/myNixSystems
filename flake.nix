@@ -15,7 +15,11 @@
           ./nixos/configuration.nix
           ./nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
-          ./home.nix # Import home.nix directly as a module
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.tom = import ./home.nix;
+          }
         ];
       };
     };
@@ -25,7 +29,11 @@
         modules = [
           ./darwin/configuration.nix
           home-manager.darwinModules.home-manager
-          ./home.nix # Import home.nix directly as a module
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.tom = import ./home.nix;
+          }
         ];
       };
     };
