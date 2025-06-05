@@ -10,6 +10,8 @@
     git
   ];
 
+  ids.gids.nixbld = 350;
+
   # Enable Zsh (default shell on macOS)
   programs.zsh.enable = true;
 }
