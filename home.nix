@@ -1,12 +1,18 @@
-{ system, username }: {
-  home-manager.useUserPackages = true;
-  home-manager.users.${username} = { pkgs, ... }: {
-    home.username = username;
-    home.homeDirectory = if system == "darwin" then "/Users/${username}" else "/home/${username}";
-    home.stateVersion = "23.11";
+# home.nix
+{ config, pkgs, ... }:
 
-    programs.alacritty.enable = true;
-    xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
+{
+  # All Home Manager specific options should be nested under the 'home' attribute
+  home = {
+    username = "tom";
+    homeDirectory = if pkgs.stdenv.isDarwin
+                    then "/Users/tom"
+                    else "/home/tom";
+    stateVersion = "23.11"; # This should match your home-manager release branch
   };
-}
 
+  # Other Home Manager programs and configurations can go here
+  programs.alacritty.enable = true;
+  xdg.configFile."alacritty/alacritty.toml".source =
+    ../config/alacritty.toml;
+}
