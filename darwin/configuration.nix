@@ -27,11 +27,15 @@
   programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
-    neovim
-    git
-    firefox
-    discord
-    spotify
+	neovim
+	git
+	alacritty
+
+  	tree
+
+    	firefox
+    	discord
+    	spotify
   ];
 
   ids.gids.nixbld = 350;
