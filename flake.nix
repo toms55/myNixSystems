@@ -1,5 +1,5 @@
 {
-  description = "Tom's NixOS + macOS Configuration";
+  description = "nixOS and macOS config";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
