@@ -50,6 +50,8 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
+
 #  services.xserver.windowManager.i3 = {
 #  enable = true;
 #  extraPackages = with pkgs; [
