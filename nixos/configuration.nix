@@ -178,7 +178,7 @@ fonts.packages = with pkgs; [
 	tree
 	lua
 	luajit
-	neofetch
+	fastfetch
 	vscode
 	rstudio
 	clang-tools
