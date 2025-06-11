@@ -67,15 +67,7 @@
     ln -sfn /home/tom/mySystem/config/qtile /home/tom/.config/qtile
     chown -h tom:users /home/tom/.config/qtile
   '';
-
-#  services.xserver.windowManager.i3 = {
-#  enable = true;
-#  extraPackages = with pkgs; [
-#    xclip
-#    xsel
-#  ];
-#};
-
+  
   hardware.graphics = {
     enable = true;
     enable32Bit = true; # This is required for Steam
@@ -238,11 +230,18 @@ fonts.packages = with pkgs; [
 
 	# Qtile
 	python313Packages.qtile
+	gnome-themes-extra
+  	adwaita-qt
+  	adwaita-qt6
+
+	dmenu
+
 	# Essential Wayland utilities
 	wayland
 	wayland-protocols
 	wayland-utils
 	xwayland
+	
 
 	# Clipboard and selection
 	wl-clipboard
@@ -363,6 +362,9 @@ environment.variables = {
 };
 
 environment.sessionVariables = {
+  GTK_THEME = "Adwaita:dark";
+  QT_STYLE_OVERRIDE = "Adwaita-Dark";
+
   XDG_CONFIG_HOME = "$HOME/.config";
   XDG_CACHE_HOME = "$HOME/.cache";
   XDG_DATA_HOME = "$HOME/.local/share";
