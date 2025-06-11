@@ -1,6 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# and in the NixOS manual (accessible by running 'nixos-help').
 
 { config, pkgs, ... }:
 
@@ -47,10 +47,26 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  # Enable Qtile with Wayland support
+  services.xserver.windowManager.qtile = {
+    enable = true;
+  };
+
   environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
+
+  # Link Qtile config from mySystem
+  environment.etc."qtile-config".source = "/home/tom/mySystem/config/qtile";
+  
+  # Create symlink for user's qtile config
+  system.activationScripts.qtileConfig = ''
+    mkdir -p /home/tom/.config
+    ln -sfn /home/tom/mySystem/config/qtile /home/tom/.config/qtile
+    chown -h tom:users /home/tom/.config/qtile
+  '';
 
 #  services.xserver.windowManager.i3 = {
 #  enable = true;
@@ -84,6 +100,20 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # Enable Wayland support globally
+  programs.xwayland.enable = true;
+
+  # Screen sharing support for Discord/Zoom
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-wlr
+    ];
+    config.common.default = "*";
+  };
+
+  # PipeWire wireplumber is enabled in the main pipewire section below
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -102,6 +132,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -113,11 +144,11 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.tom = {
     isNormalUser = true;
     description = "Tom";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -200,9 +231,105 @@ fonts.packages = with pkgs; [
 	steam
 	zoom-us
 	gimp
+	anki-bin
 
 	calibre
 	tor-browser-bundle-bin
+
+	# Qtile
+	python313Packages.qtile
+	# Essential Wayland utilities
+	wayland
+	wayland-protocols
+	wayland-utils
+	xwayland
+
+	# Clipboard and selection
+	wl-clipboard
+	clipman
+
+	# Screenshot and screen recording
+	grim        # Screenshot utility
+	slurp       # Screen area selection
+	swappy      # Screenshot editor
+	wf-recorder # Screen recording
+	obs-studio  # Advanced screen recording/streaming
+
+	# Notification daemon
+	mako        # Lightweight notification daemon
+	libnotify   # Send notifications
+
+	# Application launcher
+	wofi        # Wayland application launcher
+	rofi-wayland # Alternative launcher
+
+	# Status bar
+	waybar      # Highly customizable status bar
+	
+	# Screen sharing and portals
+	xdg-desktop-portal
+	xdg-desktop-portal-wlr
+	xdg-desktop-portal-gtk
+
+	# Audio control
+	pavucontrol # PulseAudio volume control
+	pulsemixer  # Terminal-based audio mixer
+	playerctl   # Media player control
+	pamixer     # PulseAudio command-line mixer
+
+	# Brightness control
+	brightnessctl # Control screen brightness
+	wlsunset      # Blue light filter (like redshift)
+
+	# File manager
+	xfce.thunar     # Lightweight file manager
+	ranger      # Terminal file manager
+
+	# Image viewer
+	imv         # Wayland image viewer
+	feh         # Fallback image viewer
+
+	# PDF viewer
+	zathura     # Lightweight PDF viewer
+
+	# Network management
+	networkmanagerapplet # Network manager GUI
+
+	# Bluetooth
+	blueman     # Bluetooth manager
+
+	# System monitoring
+	htop
+	btop
+	
+	# Terminal utilities
+	foot        # Fast Wayland terminal
+	kitty       # GPU-accelerated terminal
+
+	# Wayland session management
+	swayidle    # Idle management
+	swaylock    # Screen locker
+	wlogout     # Logout menu
+
+	# Additional utilities
+	kanshi      # Dynamic display configuration
+	wdisplays   # Display configuration GUI
+	gammastep   # Blue light filter
+	
+	# For Discord screen sharing specifically
+	pipewire
+	wireplumber
+
+	wlr-randr
+	swaybg
+
+	python3Packages.psutil
+	python3Packages.pulsectl
+	
+	# NVIDIA specific for Wayland
+	egl-wayland
+
+	udiskie
   ];
 
   programs.steam = {
@@ -220,15 +347,35 @@ programs.neovim = {
 
 environment.variables = {
   LUA_PATH = "?;?/init.lua;/home/tom/.config/nvim/lua/?.lua;/home/tom/.config/nvim/lua/?/init.lua";
+  # Wayland-specific environment variables
+  XDG_SESSION_TYPE = "wayland";
+  QT_QPA_PLATFORM = "wayland";
+  GDK_BACKEND = "wayland";
+  SDL_VIDEODRIVER = "wayland";
+  CLUTTER_BACKEND = "wayland";
+  # NVIDIA specific for Wayland
+  LIBVA_DRIVER_NAME = "nvidia";
+  GBM_BACKEND = "nvidia-drm";
+  __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+  WLR_NO_HARDWARE_CURSORS = "1";
+  # For Discord screen sharing
+  XDG_CURRENT_DESKTOP = "qtile";
 };
 
 environment.sessionVariables = {
   XDG_CONFIG_HOME = "$HOME/.config";
   XDG_CACHE_HOME = "$HOME/.cache";
   XDG_DATA_HOME = "$HOME/.local/share";
+  # Additional Wayland session variables
+  NIXOS_OZONE_WL = "1";  # Enable Wayland for Electron apps
+  MOZ_ENABLE_WAYLAND = "1";  # Enable Wayland for Firefox
 };
 
+  # Security for screen sharing
+  security.polkit.enable = true;
 
+  # Enable location services for wlsunset/gammastep
+  services.geoclue2.enable = true;
 
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -250,7 +397,7 @@ environment.sessionVariables = {
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
