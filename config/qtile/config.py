@@ -36,16 +36,15 @@ keys = [
     Key([mod, "shift"], "comma", lazy.window.toscreen(0), desc="Move window to monitor 0"),
 
     # volume    
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 2")),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 2")),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 4")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 4")),
 
     Key([mod], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
     Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
     Key([mod], "s", lazy.spawn("spotify"), desc="Launch Spotify"),
     
     #screenshot
-    Key([], "Print", lazy.spawn("grim ~/Pictures/screenshot_$(date +%s).png")),
-    
+    Key([], "Print", lazy.spawn("grim -g \"$(slurp)\" ~/Pictures/screenshot_$(date +%s)_selection.png"), desc="Take a screenshot of a selected area"),    
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
