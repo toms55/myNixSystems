@@ -31,12 +31,21 @@ keys = [
 
     Key([mod], "period", lazy.next_screen(), desc="Focus next monitor"),
     Key([mod], "comma", lazy.prev_screen(), desc="Focus previous monitor"),
-    
+
+    Key([mod, "shift"], "period", lazy.window.toscreen(1), desc="Move window to monitor 1"),
+    Key([mod, "shift"], "comma", lazy.window.toscreen(0), desc="Move window to monitor 0"),
+
+    # volume    
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 2")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 2")),
 
     Key([mod], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
     Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
     Key([mod], "s", lazy.spawn("spotify"), desc="Launch Spotify"),
-
+    
+    #screenshot
+    Key([], "Print", lazy.spawn("grim ~/Pictures/screenshot_$(date +%s).png")),
+    
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -52,7 +61,7 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key(
-        [mod, "shift"],
+        [mod, "control"],
         "f",
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen on the focused window",

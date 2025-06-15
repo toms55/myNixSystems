@@ -258,13 +258,6 @@ fonts.packages = with pkgs; [
 	mako        # Lightweight notification daemon
 	libnotify   # Send notifications
 
-	# Application launcher
-	wofi        # Wayland application launcher
-	rofi-wayland # Alternative launcher
-
-	# Status bar
-	waybar      # Highly customizable status bar
-	
 	# Screen sharing and portals
 	xdg-desktop-portal
 	xdg-desktop-portal-wlr
@@ -282,7 +275,6 @@ fonts.packages = with pkgs; [
 
 	# File manager
 	xfce.thunar     # Lightweight file manager
-	ranger      # Terminal file manager
 
 	# Image viewer
 	imv         # Wayland image viewer
@@ -294,22 +286,10 @@ fonts.packages = with pkgs; [
 	# Network management
 	networkmanagerapplet # Network manager GUI
 
-	# Bluetooth
-	blueman     # Bluetooth manager
-
 	# System monitoring
 	htop
 	btop
 	
-	# Terminal utilities
-	foot        # Fast Wayland terminal
-	kitty       # GPU-accelerated terminal
-
-	# Wayland session management
-	swayidle    # Idle management
-	swaylock    # Screen locker
-	wlogout     # Logout menu
-
 	# Additional utilities
 	kanshi      # Dynamic display configuration
 	wdisplays   # Display configuration GUI
