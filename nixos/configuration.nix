@@ -85,6 +85,8 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  boot.kernelParams = [ "nvidia_drm.modeset=1" ];
+
   # Enable Wayland support globally
   programs.xwayland.enable = true;
 
@@ -269,6 +271,7 @@ fonts.packages = with pkgs; [
 
     wlr-randr
     swaybg
+    swayidle
 
     python3Packages.psutil
     python3Packages.pulsectl

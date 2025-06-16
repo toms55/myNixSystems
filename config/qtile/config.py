@@ -202,6 +202,13 @@ def autostart():
     wallpaper_path = '/home/tom/mySystem/config/wallpaper.jpg'
     os.path.exists(wallpaper_path) and subprocess.Popen(['swaybg', '-i', wallpaper_path])
 
+    subprocess.Popen([
+        "swayidle",
+        "-w",
+        "timeout", "900", "swaymsg 'output * dpms off'",
+        "resume", "swaymsg 'output * dpms on'"
+    ])
+
 def assign_groups_to_screens():
     qtile.screens[0].set_group(qtile.groups_map["1"])
     qtile.screens[1].set_group(qtile.groups_map["2"])
