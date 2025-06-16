@@ -1,7 +1,9 @@
-from libqtile import bar, layout, qtile, widget
+from libqtile import bar, layout, qtile, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+import subprocess
+import os
 
 mod = "mod4"
 terminal = guess_terminal()
@@ -39,12 +41,12 @@ keys = [
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 4")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 4")),
 
-    Key([mod], "d", lazy.spawn("dmenu_run"), desc="Launch dmenu"),
+    Key([mod], "d", lazy.spawn("wofi --show drun"), desc="Launch wofi"),
     Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
     Key([mod], "s", lazy.spawn("spotify"), desc="Launch Spotify"),
     
     #screenshot
-    Key([], "Print", lazy.spawn("grim -g \"$(slurp)\" ~/Pictures/screenshot_$(date +%s)_selection.png"), desc="Take a screenshot of a selected area"),    
+    Key([], "Print", lazy.spawn("sh -c 'grim -g \"$(slurp)\" ~/Pictures/screenshot_$(date +%s).png'"), desc="Take a screenshot of a selected area"),   
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -195,6 +197,11 @@ floating_layout = layout.Floating(
     ]
 )
 
+@hook.subscribe.startup_once
+def autostart():
+    wallpaper_path = '/home/tom/mySystem/config/wallpaper.jpg'
+    os.path.exists(wallpaper_path) and subprocess.Popen(['swaybg', '-i', wallpaper_path])
+
 def assign_groups_to_screens():
     qtile.screens[0].set_group(qtile.groups_map["1"])
     qtile.screens[1].set_group(qtile.groups_map["2"])
@@ -212,7 +219,7 @@ auto_minimize = True
 wl_input_rules = None
 
 # xcursor theme (string or None) and size (integer) for Wayland backend
-wl_xcursor_theme = None
+wl_xcursor_theme = "adwaita"
 wl_xcursor_size = 24
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this

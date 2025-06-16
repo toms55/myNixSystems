@@ -42,7 +42,6 @@
     LC_TIME = "en_AU.UTF-8";
   };
 
-  # Enable greetd login manager
   services.greetd = {
     enable = true;
     settings = {
@@ -55,9 +54,6 @@
 
   environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
 
-  # Link Qtile config from mySystem
-  environment.etc."qtile-config".source = "/home/tom/mySystem/config/qtile";
-  
   # Create symlink for user's qtile config
   system.activationScripts.qtileConfig = ''
     mkdir -p /home/tom/.config
@@ -135,9 +131,6 @@
   # Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Install firefox.
-  services.tor.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -152,7 +145,7 @@
   system.autoUpgrade = {
     enable = true;
     dates = "weekly";
-    flags = ["-L" "--cleanup"];
+    flags = ["--update" "--flake" "~/mySystem/nixos/configuration.nix"];
     allowReboot = false;
   };
 
@@ -174,120 +167,116 @@ fonts.packages = with pkgs; [
 ];
 
   environment.systemPackages = with pkgs; [
-    	wget
-	git
-	neovim
-	ripgrep
-	nodejs
-	python3
-	tree-sitter
-	tree
-	lua
-	luajit
-	fastfetch
-	vscode
-	rstudio
-	clang-tools
+    wget
+	  git
+	  neovim
+	  ripgrep
+    nodejs
+    python3
+    tree-sitter
+    tree
+    lua
+	  luajit
+	  fastfetch
+	  vscode
+	  rstudio
+	  clang-tools
 
-	alacritty
-	zsh
+    alacritty
+    zsh
 
-	poetry
+    poetry
 
-	xclip
-	wl-clipboard
+    adwaita-icon-theme
+    adw-gtk3
 
-	brave
-	firefox
-	
-	spotify
-	discord
-	steam
-	zoom-us
-	gimp
-	anki-bin
+    brave
+    firefox
+    
+    spotify
+    discord
+    steam
+    zoom-us
+    gimp
+    anki-bin
 
-	calibre
-	tor-browser-bundle-bin
+    calibre
+    tor-browser-bundle-bin
 
-	# Qtile
-	python313Packages.qtile
+    # Qtile
+    python313Packages.qtile
 
-	dmenu
+    wofi 
 
-	# Essential Wayland utilities
-	wayland
-	wayland-protocols
-	wayland-utils
-	xwayland
-	
+    wayland
+    wayland-protocols
+    wayland-utils
+    xwayland
+    
 
-	# Clipboard and selection
-	wl-clipboard
-	clipman
+    # Clipboard and selection
+    wl-clipboard
+    clipman
 
-	# Screenshot and screen recording
-	grim
-	slurp
-	swappy
-	wf-recorder
-	obs-studio
+    # Screenshot and screen recording
+    grim
+    slurp
+    swappy
+    wf-recorder
+    obs-studio
 
-	# Notification daemon
-	mako
-	libnotify
+    # Notification daemon
+    mako
+    libnotify
 
-	# Screen sharing and portals
-	xdg-desktop-portal
-	xdg-desktop-portal-wlr
-	xdg-desktop-portal-gtk
+    # Screen sharing and portals
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
 
-	# Audio control
-	pavucontrol
-	pulsemixer
-	playerctl
-	pamixer
+    # Audio control
+    pavucontrol
+    pulsemixer
+    playerctl
+    pamixer
 
-	# Brightness control
-	brightnessctl
-	wlsunset
+    # Brightness control
+    brightnessctl
+    wlsunset
 
-	# File manager
-	xfce.thunar
+    # File manager
+    xfce.thunar
 
-	# Image viewer
-	imv
-	feh
+    # Image viewer
+    imv
+    feh
 
-	# PDF viewer
-	zathura
+    # Network management
+    networkmanagerapplet
 
-	# Network management
-	networkmanagerapplet
+    # System monitoring
+    htop
+    btop
+    
+    # Additional utilities
+    kanshi
+    wdisplays
+    gammastep
+    
+    # For Discord screen sharing specifically
+    pipewire
+    wireplumber
 
-	# System monitoring
-	htop
-	btop
-	
-	# Additional utilities
-	kanshi
-	wdisplays
-	gammastep
-	
-	# For Discord screen sharing specifically
-	pipewire
-	wireplumber
+    wlr-randr
+    swaybg
 
-	wlr-randr
-	swaybg
+    python3Packages.psutil
+    python3Packages.pulsectl
+    
+    # NVIDIA specific for Wayland
+    egl-wayland
 
-	python3Packages.psutil
-	python3Packages.pulsectl
-	
-	# NVIDIA specific for Wayland
-	egl-wayland
-
-	udiskie
+    udiskie
   ];
 
   programs.steam = {
@@ -318,6 +307,8 @@ environment.variables = {
   WLR_NO_HARDWARE_CURSORS = "1";
   # For Discord screen sharing
   XDG_CURRENT_DESKTOP = "qtile";
+
+  EDITOR = "nvim";
 };
 
 environment.sessionVariables = {
@@ -330,9 +321,6 @@ environment.sessionVariables = {
   # Additional Wayland session variables
   NIXOS_OZONE_WL = "1";
   MOZ_ENABLE_WAYLAND = "1";
-
-  XCURSOR_THEME = "Bibata-Modern-Classic";
-  XCURSOR_SIZE = "24";
 };
 
   # Security for screen sharing
