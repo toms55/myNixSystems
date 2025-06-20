@@ -63,16 +63,22 @@
   
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # This is required for Steam
+    enable32Bit = true;
+    
     extraPackages = with pkgs; [
       vulkan-tools
       vulkan-headers
       vulkan-loader
+      nvidia-vaapi-driver
+      vaapiVdpau
+      libvdpau-va-gl
     ];
+
     extraPackages32 = with pkgs.pkgsi686Linux; [
       vulkan-tools
-      vulkan-headers
+      vulkan-headers  
       vulkan-loader
+      nvidia-vaapi-driver
     ];
   };
   
@@ -94,10 +100,13 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
       xdg-desktop-portal-wlr
     ];
-    config.common.default = "*";
+    config = {
+      common = {
+        default = "wlr";
+      };
+    };
   };
 
   # Enable CUPS to print documents.
@@ -112,13 +121,9 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
+
+  services.dbus.enable = true;
 
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.tom = {
@@ -197,10 +202,15 @@ fonts.packages = with pkgs; [
     
     spotify
     discord
+    vesktop
     steam
+    gamemode
+    gamescope
+
     zoom-us
     gimp
     anki-bin
+    libreoffice
 
     calibre
     tor-browser-bundle-bin
@@ -208,7 +218,8 @@ fonts.packages = with pkgs; [
     # Qtile
     python313Packages.qtile
 
-    wofi 
+    wofi
+    nh
 
     wayland
     wayland-protocols
@@ -236,6 +247,7 @@ fonts.packages = with pkgs; [
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
 
+
     # Audio control
     pavucontrol
     pulsemixer
@@ -260,6 +272,8 @@ fonts.packages = with pkgs; [
     htop
     btop
     
+    xorg.xkill
+
     # Additional utilities
     kanshi
     wdisplays
@@ -272,6 +286,7 @@ fonts.packages = with pkgs; [
     wlr-randr
     swaybg
     swayidle
+    swaylock
 
     python3Packages.psutil
     python3Packages.pulsectl
@@ -282,10 +297,16 @@ fonts.packages = with pkgs; [
     udiskie
   ];
 
+  programs.gamemode.enable = true;
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
 programs.neovim = {
@@ -299,6 +320,7 @@ environment.variables = {
   LUA_PATH = "?;?/init.lua;/home/tom/.config/nvim/lua/?.lua;/home/tom/.config/nvim/lua/?/init.lua";
   # Wayland-specific environment variables
   XDG_SESSION_TYPE = "wayland";
+  ELECTRON_OZONE_PLATFORM_HINT = "auto";
   QT_QPA_PLATFORM = "wayland";
   GDK_BACKEND = "wayland";
   SDL_VIDEODRIVER = "wayland";
@@ -307,10 +329,13 @@ environment.variables = {
   LIBVA_DRIVER_NAME = "nvidia";
   GBM_BACKEND = "nvidia-drm";
   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-  WLR_NO_HARDWARE_CURSORS = "1";
+  # WLR_NO_HARDWARE_CURSORS = "1";
   # For Discord screen sharing
   XDG_CURRENT_DESKTOP = "qtile";
-
+  
+  STEAM_FORCE_X11 = "1";
+  WLR_NO_HARDWARE_CURSORS = "1";
+  STEAM_GAMESCOPE = "gamescope -f --";
   EDITOR = "nvim";
 };
 

@@ -208,6 +208,11 @@ def autostart():
         "timeout", "900", "swaymsg 'output * dpms off'",
         "resume", "swaymsg 'output * dpms on'"
     ])
+    # Start swaylock. Running it directly like this should make its D-Bus service available.
+    # You might want to add '&' to run it in the background, but often it runs and waits.
+    # For our purposes, just ensuring it starts is key.
+    subprocess.Popen(["swaylock"])
+    subprocess.Popen(["xdg-desktop-portal-wlr"])
 
 def assign_groups_to_screens():
     qtile.screens[0].set_group(qtile.groups_map["1"])
