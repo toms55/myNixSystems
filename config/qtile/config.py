@@ -45,13 +45,23 @@ keys = [
     # volume    
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 4")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 4")),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc="Previous track"),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc="Next track"),
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc="Play/Pause"),
 
     Key([mod], "d", lazy.spawn("wofi --show drun"), desc="Launch wofi"),
     Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
     Key([mod], "s", lazy.spawn("spotify"), desc="Launch Spotify"),
     
     #screenshot
-    Key([], "Print", lazy.spawn("sh -c 'grim -g \"$(slurp)\" ~/Pictures/screenshot_$(date +%s).png'"), desc="Take a screenshot of a selected area"),   
+    Key([], "Print", lazy.spawn("sh -c 'grim -g \"$(slurp)\" - | wl-copy'"), desc="Copy a screenshot of a selected area to the clipboard"),
+
+    Key([mod], "Print", lazy.spawn("sh -c 'grim -g \"$(slurp)\" ~/Pictures/Screenshots/screenshot_$(date +%s).png'"), desc="Take a screenshot of a selected area"),
+
+    Key(["shift"], "Print", 
+    lazy.spawn("grim -g \"$(slurp)\" - | wl-copy"), 
+    desc="Copy screenshot to clipboard"),
+
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -163,8 +173,20 @@ tokyo_colors = {
     "grey": "#565f89",
 }
 
-def create_bar(is_primary=True):
+def create_bar(is_primary):
     widgets = []
+
+    if not is_primary:
+        widgets.extend([
+            widget.GenPollText(
+                update_interval=1800,  # every 30 minutes
+                func=lambda: subprocess.getoutput("curl -s 'wttr.in/Sydney?format=1'"),
+                foreground=tokyo_colors["blue"],
+                background=tokyo_colors["bg"],
+                padding=6
+            ),
+        ])
+
 
     if is_primary:
         widgets.extend([
