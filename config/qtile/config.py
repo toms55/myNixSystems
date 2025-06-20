@@ -31,6 +31,11 @@ keys = [
     Key([mod, "control"], "i", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
 
+    Key([mod], "m", lazy.window.toggle_minimize(), desc="minimise focused window"),
+    Key([mod], "u", lazy.function(lambda qtile: [
+        w.toggle_minimize() for w in qtile.current_group.windows if w.minimized
+    ]), desc="Unminimise all windows"),
+
     Key([mod], "period", lazy.next_screen(), desc="Focus next monitor"),
     Key([mod], "comma", lazy.prev_screen(), desc="Focus previous monitor"),
 
@@ -138,36 +143,50 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+def create_bar(is_primary=True):
+    widgets = []
+
+    if is_primary:
+        widgets.extend([
+            widget.GroupBox(),
+        ])
+    
+    widgets.extend([
+        widget.Prompt(),
+        widget.WindowName(),
+        widget.Chord(
+            chords_colors={
+                "launch": ("#ff0000", "#ffffff"),
+            },
+            name_transform=lambda name: name.upper(),
+        ),
+    ])
+    
+    if not is_primary:
+        widgets.extend([
+                widget.CPU(format='CPU: {load_percent}%', padding=5),
+                widget.Memory(padding=5),
+            ])
+
+    widgets.extend([
+        widget.Clock(format="%Y-%m-%d %a %I:%M %p", padding=5),
+        widget.QuickExit(),
+    ])
+    
+    return bar.Bar(
+        widgets,
+        24,
+        # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+        # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+    )
+
+
 screens = [
     Screen(
-        bottom=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.QuickExit(),
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
+        top=create_bar(is_primary=True),
+    ),
+    Screen(
+        top=create_bar(is_primary=False),
     ),
 ]
 
@@ -205,14 +224,10 @@ def autostart():
     subprocess.Popen([
         "swayidle",
         "-w",
-        "timeout", "900", "swaymsg 'output * dpms off'",
-        "resume", "swaymsg 'output * dpms on'"
+        "timeout", "900", "swaylock -f -c 000000",
+        "timeout", "1200", "wlr-randr --output '*' --off",
+        "resume", "wlr-randr --output '*' --on"
     ])
-    # Start swaylock. Running it directly like this should make its D-Bus service available.
-    # You might want to add '&' to run it in the background, but often it runs and waits.
-    # For our purposes, just ensuring it starts is key.
-    subprocess.Popen(["swaylock"])
-    subprocess.Popen(["xdg-desktop-portal-wlr"])
 
 def assign_groups_to_screens():
     qtile.screens[0].set_group(qtile.groups_map["1"])
