@@ -120,14 +120,21 @@ for i in groups:
         ]
     )
 
+layout_theme = {
+    "border_width": 3,
+    "margin": 10,
+    "border_focus": "#171515", 
+    "border_normal": "#1a1b26",
+}
+
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
-    layout.Max(),
+    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(),
+    layout.MonadTall(**layout_theme),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -143,42 +150,106 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+
+# Tokyo Night colors
+tokyo_colors = {
+    "bg": "#1a1b26",
+    "fg": "#c0caf5",
+    "blue": "#7aa2f7",
+    "green": "#9ece6a",
+    "red": "#f7768e",
+    "yellow": "#e0af68",
+    "purple": "#bb9af7",
+    "grey": "#565f89",
+}
+
 def create_bar(is_primary=True):
     widgets = []
 
     if is_primary:
         widgets.extend([
-            widget.GroupBox(),
+            widget.GroupBox(
+                font="JetBrainsMono Nerd Font",
+                fontsize=12,
+                margin_y=3,
+                margin_x=6,
+                padding_y=5,
+                padding_x=8,
+                borderwidth=2,
+                active=tokyo_colors["fg"],
+                inactive=tokyo_colors["grey"],
+                rounded=False,
+                highlight_method="line",
+                this_current_screen_border=tokyo_colors["blue"],
+                this_screen_border=tokyo_colors["purple"],
+                other_current_screen_border=tokyo_colors["grey"],
+                other_screen_border=tokyo_colors["grey"],
+                disable_drag=True,
+                background=tokyo_colors["bg"],
+                hide_unused=True
+            ),
         ])
-    
-    widgets.extend([
-        widget.Prompt(),
-        widget.WindowName(),
-        widget.Chord(
-            chords_colors={
-                "launch": ("#ff0000", "#ffffff"),
-            },
-            name_transform=lambda name: name.upper(),
-        ),
-    ])
-    
-    if not is_primary:
-        widgets.extend([
-                widget.CPU(format='CPU: {load_percent}%', padding=5),
-                widget.Memory(padding=5),
-            ])
 
     widgets.extend([
-        widget.Clock(format="%Y-%m-%d %a %I:%M %p", padding=5),
-        widget.QuickExit(),
+        widget.Prompt(
+            font="JetBrainsMono Nerd Font",
+            foreground=tokyo_colors["fg"],
+            background=tokyo_colors["bg"],
+        ),
+        widget.WindowName(
+            font="JetBrainsMono Nerd Font",
+            foreground=tokyo_colors["fg"],
+            background=tokyo_colors["bg"],
+            format="{name}",
+        ),
+        widget.Chord(
+            chords_colors={
+                "launch": (tokyo_colors["red"], tokyo_colors["fg"]),
+            },
+            name_transform=lambda name: name.upper(),
+            foreground=tokyo_colors["fg"],
+            background=tokyo_colors["bg"],
+        ),
     ])
-    
+
+    if not is_primary:
+        widgets.extend([
+            widget.CPU(
+                format='{load_percent}%',
+                foreground=tokyo_colors["green"],
+                background=tokyo_colors["bg"],
+                padding=6
+            ),
+            widget.Memory(
+                format='{MemUsed:.0f}M',
+                foreground=tokyo_colors["yellow"],
+                background=tokyo_colors["bg"],
+                padding=6
+            ),
+        ])
+
+    widgets.extend([
+        widget.Clock(
+            format="⏱︎  %a %b %d %I:%M %p",
+            foreground=tokyo_colors["purple"],
+            background=tokyo_colors["bg"],
+            padding=6
+        ),
+        widget.QuickExit(
+            default_text='╰┈➤EXIT➡ ',
+            countdown_format='[{}]',
+            foreground=tokyo_colors["red"],
+            background=tokyo_colors["bg"],
+        ),
+    ])
+
     return bar.Bar(
         widgets,
         24,
-        # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-        # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        background=tokyo_colors["bg"],
+        margin=[7, 10, 0, 10],
     )
+
 
 
 screens = [
