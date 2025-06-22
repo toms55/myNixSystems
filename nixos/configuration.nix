@@ -187,7 +187,8 @@ fonts.packages = with pkgs; [
 	  luajit
 	  fastfetch
 	  vscode
-	  rstudio
+    python313Packages.notebook
+    rstudio
 	  clang-tools
 
     alacritty
