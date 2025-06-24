@@ -123,7 +123,11 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
-
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    openFirewall = true;
+  };
   services.dbus.enable = true;
 
   # Define a user account. Don't forget to set a password with 'passwd'.
@@ -195,7 +199,8 @@ fonts.packages = with pkgs; [
     zsh
 
     poetry
-
+    python313Packages.pip
+    
     adwaita-icon-theme
     adw-gtk3
 
@@ -322,7 +327,7 @@ environment.variables = {
   LUA_PATH = "?;?/init.lua;/home/tom/.config/nvim/lua/?.lua;/home/tom/.config/nvim/lua/?/init.lua";
   # Wayland-specific environment variables
   XDG_SESSION_TYPE = "wayland";
-  ELECTRON_OZONE_PLATFORM_HINT = "auto";
+  ELECTRON_OZONE_PLATFORM_HINT = "wayland";
   QT_QPA_PLATFORM = "wayland";
   GDK_BACKEND = "wayland";
   SDL_VIDEODRIVER = "wayland";
