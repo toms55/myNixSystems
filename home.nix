@@ -13,4 +13,11 @@ in {
   programs.alacritty.enable = true;
 
   xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
+
+  programs.neovim.enable = true;
+
+  xdg.configFile."nvim" = {
+  source = ./config/nvim;
+  recursive = true;
+};
 }

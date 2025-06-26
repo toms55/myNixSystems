@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+:qXXXx{ config, pkgs, ... }: {
   system.stateVersion = 4;
 
   system.primaryUser = "tom";
@@ -38,11 +38,6 @@
     discord
     spotify
   ];
-
-   fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
-
 
   ids.gids.nixbld = 350;
 }
