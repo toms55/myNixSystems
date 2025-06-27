@@ -33,8 +33,12 @@
     neovim
     git
     alacritty
+    
     tree
+    
     firefox
+    brave
+
     discord
     spotify
   ];
