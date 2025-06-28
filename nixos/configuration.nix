@@ -88,7 +88,6 @@
   hardware.nvidia = {
     open = false;
     modesetting.enable = true;
-    powerManagement.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
@@ -194,6 +193,7 @@ fonts.packages = with pkgs; [
     python313Packages.notebook
     rstudio
 	  clang-tools
+    unzip
 
     alacritty
     zsh
@@ -310,10 +310,28 @@ fonts.packages = with pkgs; [
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+    
+    gamescopeSession.enable = true;
 
     extraCompatPackages = with pkgs; [
       proton-ge-bin
     ];
+
+    package = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+      ];
+    };
+
   };
 
 programs.neovim = {
@@ -337,12 +355,11 @@ environment.variables = {
   GBM_BACKEND = "nvidia-drm";
   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   # WLR_NO_HARDWARE_CURSORS = "1";
-  # For Discord screen sharing
   XDG_CURRENT_DESKTOP = "qtile";
   
-  STEAM_FORCE_X11 = "1";
-  WLR_NO_HARDWARE_CURSORS = "1";
-  STEAM_GAMESCOPE = "gamescope -f --";
+  # STEAM_FORCE_X11 = "1";
+  # WLR_NO_HARDWARE_CURSORS = "1";
+  STEAM_USE_DYNAMIC_VRS = "1";
   EDITOR = "nvim";
 };
 
