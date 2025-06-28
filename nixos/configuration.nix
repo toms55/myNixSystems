@@ -75,6 +75,9 @@
     open = false;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
   };
 
   boot.kernelParams = [ "nvidia_drm.modeset=1" ];
@@ -181,7 +184,11 @@ fonts.packages = with pkgs; [
     spotify
     discord
     vesktop
+    
     steam
+    steam-run
+    wineWowPackages.stable
+    winetricks 
     gamemode
     gamescope
 
@@ -252,6 +259,7 @@ fonts.packages = with pkgs; [
     btop
     
     xorg.xkill
+    killall
 
     # additional utilities
     kanshi
@@ -288,20 +296,20 @@ fonts.packages = with pkgs; [
       proton-ge-bin
     ];
 
-    package = pkgs.steam.override {
-      extraPkgs = pkgs: with pkgs; [
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
-        libpng
-        libpulseaudio
-        libvorbis
-        stdenv.cc.cc.lib
-        libkrb5
-        keyutils
-      ];
-    };
+    # package = pkgs.steam.override {
+    #   extraPkgs = pkgs: with pkgs; [
+    #     xorg.libXcursor
+    #     xorg.libXi
+    #     xorg.libXinerama
+    #     xorg.libXScrnSaver
+    #     libpng
+    #     libpulseaudio
+    #     libvorbis
+    #     stdenv.cc.cc.lib
+    #     libkrb5
+    #     keyutils
+    #   ];
+    # };
 
   };
 
