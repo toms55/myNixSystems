@@ -40,12 +40,12 @@
     };
   };
 
-  environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mysystem/config/wallpaper.jpg";
+  environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
 
   # create symlink for user's qtile config
   system.activationScripts.qtileconfig = ''
     mkdir -p /home/tom/.config
-    ln -sfn /home/tom/mysystem/config/qtile /home/tom/.config/qtile
+    ln -sfn /home/tom/mySystem/config/qtile /home/tom/.config/qtile
     chown -h tom:users /home/tom/.config/qtile
   '';
   
@@ -108,13 +108,12 @@
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
   };
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
   };
   services.dbus.enable = true;
