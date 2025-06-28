@@ -17,9 +17,4 @@ in {
   programs.neovim.enable = true;
 
   xdg.configFile."nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
-
-  xdg.configFile."nvim/lua/custom/plugins/init.lua".source = ./config/nvim/lua/custom/plugins/init.lua;
-  xdg.configFile."nvim/lua/custom/mappings.lua".source = ./config/nvim/lua/custom/mappings.lua;
-
-};
 }
