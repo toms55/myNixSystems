@@ -1,48 +1,35 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
+# edit this configuration file to define what should be installed on
+# your system.  help is available in the configuration.nix(5) man page
+# and in the nixos manual (accessible by running 'nixos-help').
 
 { config, pkgs, ... }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ # include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
-  # Bootloader.
+  # bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "nixos"; # define your hostname.
+  # networking.wireless.enable = true;  # enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
+  # configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # networking.proxy.noproxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
+  # enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  # set your time zone.
   time.timeZone = "Australia/Sydney";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_AU.UTF-8";
-    LC_IDENTIFICATION = "en_AU.UTF-8";
-    LC_MEASUREMENT = "en_AU.UTF-8";
-    LC_MONETARY = "en_AU.UTF-8";
-    LC_NAME = "en_AU.UTF-8";
-    LC_NUMERIC = "en_AU.UTF-8";
-    LC_PAPER = "en_AU.UTF-8";
-    LC_TELEPHONE = "en_AU.UTF-8";
-    LC_TIME = "en_AU.UTF-8";
-  };
-  
-  # Diplay manager
+  # diplay manager
   services.greetd = {
     enable = true;
     settings = {
@@ -53,37 +40,36 @@
     };
   };
 
-  environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
+  environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mysystem/config/wallpaper.jpg";
 
-  # Create symlink for user's qtile config
-  system.activationScripts.qtileConfig = ''
+  # create symlink for user's qtile config
+  system.activationScripts.qtileconfig = ''
     mkdir -p /home/tom/.config
-    ln -sfn /home/tom/mySystem/config/qtile /home/tom/.config/qtile
+    ln -sfn /home/tom/mysystem/config/qtile /home/tom/.config/qtile
     chown -h tom:users /home/tom/.config/qtile
   '';
   
   hardware.graphics = {
     enable = true;
-    enable32Bit = true;
-    
+    enable32Bit = true;  # was driSupport32Bit
+
     extraPackages = with pkgs; [
-      vulkan-tools
-      vulkan-headers
       vulkan-loader
+      vulkan-tools
+      vulkan-validation-layers
       nvidia-vaapi-driver
       vaapiVdpau
       libvdpau-va-gl
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
-      vulkan-tools
-      vulkan-headers  
       vulkan-loader
+      vulkan-tools
       nvidia-vaapi-driver
     ];
   };
   
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelpackages = pkgs.linuxpackages_latest;
 
   hardware.nvidia = {
     open = false;
@@ -92,11 +78,15 @@
   };
 
   boot.kernelParams = [ "nvidia_drm.modeset=1" ];
+  
+  #vm stuff
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
 
-  # Enable Wayland support globally
+  # enable wayland support globally
   programs.xwayland.enable = true;
 
-  # Screen sharing support for Discord/Zoom
+  # screen sharing support for discord/zoom
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -109,10 +99,10 @@
     };
   };
 
-  # Enable CUPS to print documents.
+  # enable cups to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
+  # enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -129,39 +119,21 @@
   };
   services.dbus.enable = true;
 
-  # Define a user account. Don't forget to set a password with 'passwd'.
+  # define a user account. don't forget to set a password with 'passwd'.
   users.users.tom = {
     isNormalUser = true;
-    description = "Tom";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    description = "tom";
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"];
   };
 
-  # Flakes
+  # flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Allow unfree packages
+  # allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "weekly";
-    };
-    optimise.automatic = true;
-  };
-
-  system.autoUpgrade = {
-    enable = true;
-    dates = "weekly";
-    flags = ["--update" "--flake" "~/mySystem/nixos/configuration.nix"];
-    allowReboot = false;
-  };
-
   systemd.timers.nixos-auto-upgrade = {
-    timerConfig.Persistent = true;
+    timerConfig.persistent = true;
   };
 
 fonts.packages = with pkgs; [
@@ -221,8 +193,9 @@ fonts.packages = with pkgs; [
 
     calibre
     tor-browser-bundle-bin
+    virt-manager
 
-    # Qtile
+    # qtile
     python313Packages.qtile
 
     wofi
@@ -234,71 +207,70 @@ fonts.packages = with pkgs; [
     xwayland
     
 
-    # Clipboard and selection
+    # clipboard and selection
     wl-clipboard
     clipman
 
-    # Screenshot and screen recording
+    # screenshot and screen recording
     grim
     slurp
     swappy
     wf-recorder
     obs-studio
 
-    # Notification daemon
+    # notification daemon
     mako
     libnotify
 
-    # Screen sharing and portals
+    # screen sharing and portals
     xdg-desktop-portal
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
 
 
-    # Audio control
+    # audio control
     pavucontrol
     pulsemixer
     playerctl
     pamixer
 
-    # Brightness control
+    # brightness control
     brightnessctl
     wlsunset
 
-    # File manager
+    # file manager
     xfce.thunar
 
-    # Image viewer
+    # image viewer
     imv
     feh
 
-    # Network management
+    # network management
     networkmanagerapplet
 
-    # System monitoring
+    # system monitoring
     htop
     btop
     
     xorg.xkill
 
-    # Additional utilities
+    # additional utilities
     kanshi
     wdisplays
     gammastep
     
-    # For Discord screen sharing specifically
+    # for discord screen sharing specifically
     pipewire
     wireplumber
 
     wlr-randr
     swaybg
-    swayidle
     swaylock
 
     python3Packages.psutil
     python3Packages.pulsectl
     
-    # NVIDIA specific for Wayland
+    # nvidia specific for wayland
     egl-wayland
 
     udiskie
@@ -340,53 +312,42 @@ programs.neovim = {
   viAlias = true;
   vimAlias = true;
 };
+ environment.sessionVariables = {
+  gtk_theme = "adwaita:dark";
+  qt_style_override = "adwaita-dark";
 
-environment.variables = {
-  LUA_PATH = "?;?/init.lua;/home/tom/.config/nvim/lua/?.lua;/home/tom/.config/nvim/lua/?/init.lua";
-  # Wayland-specific environment variables
-  XDG_SESSION_TYPE = "wayland";
-  ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-  QT_QPA_PLATFORM = "wayland";
-  GDK_BACKEND = "wayland";
-  SDL_VIDEODRIVER = "wayland";
-  CLUTTER_BACKEND = "wayland";
-  # NVIDIA specific for Wayland
-  LIBVA_DRIVER_NAME = "nvidia";
-  GBM_BACKEND = "nvidia-drm";
-  __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-  # WLR_NO_HARDWARE_CURSORS = "1";
-  XDG_CURRENT_DESKTOP = "qtile";
-  
-  # STEAM_FORCE_X11 = "1";
-  # WLR_NO_HARDWARE_CURSORS = "1";
-  STEAM_USE_DYNAMIC_VRS = "1";
-  EDITOR = "nvim";
+  xdg_config_home = "$home/.config";
+  xdg_cache_home = "$home/.cache";
+  xdg_data_home = "$home/.local/share";
+
+  xdg_session_type = "wayland";
+  electron_ozone_platform_hint = "wayland";
+  qt_qpa_platform = "wayland";
+  gdk_backend = "wayland";
+  sdl_videodriver = "wayland";
+  clutter_backend = "wayland";
+  libva_driver_name = "nvidia";
+  gbm_backend = "nvidia-drm";
+  __glx_vendor_library_name = "nvidia";
+  xdg_current_desktop = "qtile";
+  wlr_no_hardware_cursors = "1";
+  steam_use_dynamic_vrs = "1";
+  nixos_ozone_wl = "1";
+  moz_enable_wayland = "1";
+  editor = "nvim";
 };
-
-environment.sessionVariables = {
-  GTK_THEME = "Adwaita:dark";
-  QT_STYLE_OVERRIDE = "Adwaita-Dark";
-
-  XDG_CONFIG_HOME = "$HOME/.config";
-  XDG_CACHE_HOME = "$HOME/.cache";
-  XDG_DATA_HOME = "$HOME/.local/share";
-  # Additional Wayland session variables
-  NIXOS_OZONE_WL = "1";
-  MOZ_ENABLE_WAYLAND = "1";
-};
-
-  # Security for screen sharing
+  # security for screen sharing
   security.polkit.enable = true;
 
-  # Enable location services for wlsunset/gammastep
+  # enable location services for wlsunset/gammastep
   services.geoclue2.enable = true;
 
-  # This value determines the NixOS release from which the default
+  # this value determines the nixos release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
+  # on your system were taken. it's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
+  # before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11"; # did you read the comment?
 
 }
