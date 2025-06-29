@@ -11,10 +11,14 @@ in {
 
   programs.zsh.enable = true;
   programs.alacritty.enable = true;
-
-  xdg.configFile."alacritty/alacritty.toml".source = ./config/alacritty.toml;
-
   programs.neovim.enable = true;
 
-  xdg.configFile."nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
+  # Let Home Manager manage the files
+  xdg.configFile = {
+    "alacritty/alacritty.toml".source = ./config/alacritty.toml;
+    "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
+  } // lib.mkIf (!isDarwin) {
+    "qtile/config.py".source = ./config/qtile/config.py;
+  };
 }
+

@@ -26,15 +26,24 @@
 
   # set your time zone.
   time.timeZone = "Australia/Sydney";
-
-  i18n.defaultLocale = "en_GB.UTF-8";
-
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "en_AU.UTF-8";
+    LC_IDENTIFICATION = "en_AU.UTF-8";
+    LC_MEASUREMENT = "en_AU.UTF-8";
+    LC_MONETARY = "en_AU.UTF-8";
+    LC_NAME = "en_AU.UTF-8";
+    LC_NUMERIC = "en_AU.UTF-8";
+    LC_PAPER = "en_AU.UTF-8";
+    LC_TELEPHONE = "en_AU.UTF-8";
+    LC_TIME = "en_AU.UTF-8";
+  };
   # diplay manager
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd 'qtile start --backend wayland'";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd 'sh -c \"sleep 1; qtile start --backend wayland\"'";
         user = "greeter";
       };
     };
@@ -42,13 +51,6 @@
 
   environment.etc."backgrounds/my-wallpaper.jpg".source = "/home/tom/mySystem/config/wallpaper.jpg";
 
-  # create symlink for user's qtile config
-  system.activationScripts.qtileconfig = ''
-    mkdir -p /home/tom/.config
-    ln -sfn /home/tom/mySystem/config/qtile /home/tom/.config/qtile
-    chown -h tom:users /home/tom/.config/qtile
-  '';
-  
   hardware.graphics = {
     enable = true;
     enable32Bit = true;  # was driSupport32Bit
@@ -76,8 +78,7 @@
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
+    powerManagement.enable = true;
   };
 
   boot.kernelParams = [ "nvidia_drm.modeset=1" ];
@@ -183,14 +184,7 @@ fonts.packages = with pkgs; [
     
     spotify
     discord
-    vesktop
-    
     steam
-    steam-run
-    wineWowPackages.stable
-    winetricks 
-    gamemode
-    gamescope
 
     zoom-us
     gimp
@@ -283,36 +277,6 @@ fonts.packages = with pkgs; [
     udiskie
   ];
 
-  programs.gamemode.enable = true;
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    
-    gamescopeSession.enable = true;
-
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-
-    # package = pkgs.steam.override {
-    #   extraPkgs = pkgs: with pkgs; [
-    #     xorg.libXcursor
-    #     xorg.libXi
-    #     xorg.libXinerama
-    #     xorg.libXScrnSaver
-    #     libpng
-    #     libpulseaudio
-    #     libvorbis
-    #     stdenv.cc.cc.lib
-    #     libkrb5
-    #     keyutils
-    #   ];
-    # };
-
-  };
-
 programs.neovim = {
   enable = true;
   defaultEditor = true;
@@ -338,7 +302,6 @@ programs.neovim = {
   __glx_vendor_library_name = "nvidia";
   xdg_current_desktop = "qtile";
   wlr_no_hardware_cursors = "1";
-  steam_use_dynamic_vrs = "1";
   nixos_ozone_wl = "1";
   moz_enable_wayland = "1";
   editor = "nvim";
