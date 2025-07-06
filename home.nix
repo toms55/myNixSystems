@@ -15,7 +15,10 @@ in {
 
   # Let Home Manager manage the files
   xdg.configFile = {
-    "alacritty/alacritty.toml".source = ./config/alacritty.toml;
+    "alacritty/alacritty.toml" = {
+      source = /home/tom/mySystem/config/alacritty.toml;
+      force = true;
+    };
     "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
   } // lib.mkIf (!isDarwin) {
     "qtile/config.py".source = ./config/qtile/config.py;

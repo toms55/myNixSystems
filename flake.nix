@@ -37,5 +37,13 @@
         ];
       };
     };
+    
+    # Add standalone homeConfigurations for direct home-manager usage
+    homeConfigurations = {
+      "tom@nixos" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ];
+      };
+   };
   };
 }

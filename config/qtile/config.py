@@ -175,30 +175,30 @@ tokyo_colors = {
 
 def create_bar(is_primary):
     
-    def get_weather():
-        try:
-            # Run curl with a 5-second timeout
-            return subprocess.check_output(
-                ["curl", "-s", "wttr.in/Sydney?format=1"],
-                timeout=5,
-                text=True
-            ).strip()
-        except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
-            # If it fails or times out, return a default string
-            return " Weather N/A"
-    
+    # def get_weather():
+    #     try:
+    #         # Run curl with a 5-second timeout
+    #         return subprocess.check_output(
+    #             ["curl", "-s", "wttr.in/Sydney?format=1"],
+    #             timeout=5,
+    #             text=True
+    #         ).strip()
+    #     except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+    #         # If it fails or times out, return a default string
+    #         return " Weather N/A"
+    #
     widgets = []
 
-    if not is_primary:
-        widgets.extend([
-            widget.GenPollText(
-                update_interval=1800,  # every 30 minutes
-                func=get_weather,
-                foreground=tokyo_colors["blue"],
-                background=tokyo_colors["bg"],
-                padding=6
-            ),
-        ])
+    # if not is_primary:
+    #     widgets.extend([
+    #         widget.GenPollText(
+    #             update_interval=1800,  # every 30 minutes
+    #             func=get_weather,
+    #             foreground=tokyo_colors["blue"],
+    #             background=tokyo_colors["bg"],
+    #             padding=6
+    #         ),
+    #     ])
 
 
     if is_primary:

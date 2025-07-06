@@ -38,7 +38,8 @@
     LC_TELEPHONE = "en_AU.UTF-8";
     LC_TIME = "en_AU.UTF-8";
   };
-  # diplay manager
+
+  # display manager
   services.greetd = {
     enable = true;
     settings = {
@@ -77,31 +78,17 @@
     open = false;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-
     powerManagement.enable = true;
   };
 
   boot.kernelParams = [ "nvidia_drm.modeset=1" ];
   
-  #vm stuff
+  # vm stuff
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
   # enable wayland support globally
   programs.xwayland.enable = true;
-
-  # screen sharing support for discord/zoom
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-wlr
-    ];
-    config = {
-      common = {
-        default = "wlr";
-      };
-    };
-  };
 
   # enable cups to print documents.
   services.printing.enable = true;
@@ -115,18 +102,21 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
+
   services.avahi = {
     enable = true;
     nssmdns4 = true;
     openFirewall = true;
   };
+
   services.dbus.enable = true;
 
   # define a user account. don't forget to set a password with 'passwd'.
   users.users.tom = {
     isNormalUser = true;
     description = "tom";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio"];
+    # extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"]; #VM 
   };
 
   # flakes
@@ -139,42 +129,43 @@
     timerConfig.persistent = true;
   };
 
-fonts.packages = with pkgs; [
-  noto-fonts
-  noto-fonts-cjk-sans
-  noto-fonts-emoji
-  liberation_ttf
-  fira-code
-  fira-code-symbols
-  mplus-outline-fonts.githubRelease
-  dina-font
-  proggyfonts
-  nerd-fonts.jetbrains-mono
-];
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+    nerd-fonts.jetbrains-mono
+  ];
 
   environment.systemPackages = with pkgs; [
     wget
-	  git
-	  neovim
-	  ripgrep
+    home-manager
+    git
+    neovim
+    ripgrep
     nodejs
     python3
     tree-sitter
     tree
     lua
-	  luajit
-	  fastfetch
-	  vscode
-    python313Packages.notebook
+    luajit
+    fastfetch
+    vscode
+    python3Packages.notebook
     rstudio
-	  clang-tools
+    clang-tools
     unzip
 
     alacritty
     zsh
 
     poetry
-    python313Packages.pip
+    python3Packages.pip
     
     adwaita-icon-theme
     adw-gtk3
@@ -184,7 +175,9 @@ fonts.packages = with pkgs; [
     
     spotify
     discord
-    steam
+    
+    mono
+    wineWowPackages.full
 
     zoom-us
     gimp
@@ -196,7 +189,7 @@ fonts.packages = with pkgs; [
     virt-manager
 
     # qtile
-    python313Packages.qtile
+    python3Packages.qtile
 
     wofi
     nh
@@ -205,7 +198,6 @@ fonts.packages = with pkgs; [
     wayland-protocols
     wayland-utils
     xwayland
-    
 
     # clipboard and selection
     wl-clipboard
@@ -226,7 +218,6 @@ fonts.packages = with pkgs; [
     xdg-desktop-portal
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
-
 
     # audio control
     pavucontrol
@@ -277,35 +268,37 @@ fonts.packages = with pkgs; [
     udiskie
   ];
 
-programs.neovim = {
-  enable = true;
-  defaultEditor = true;
-  viAlias = true;
-  vimAlias = true;
-};
- environment.sessionVariables = {
-  gtk_theme = "adwaita:dark";
-  qt_style_override = "adwaita-dark";
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
-  xdg_config_home = "$home/.config";
-  xdg_cache_home = "$home/.cache";
-  xdg_data_home = "$home/.local/share";
+  environment.sessionVariables = {
+    GTK_THEME = "adwaita:dark";
+    QT_STYLE_OVERRIDE = "adwaita-dark";
 
-  xdg_session_type = "wayland";
-  electron_ozone_platform_hint = "wayland";
-  qt_qpa_platform = "wayland";
-  gdk_backend = "wayland";
-  sdl_videodriver = "wayland";
-  clutter_backend = "wayland";
-  libva_driver_name = "nvidia";
-  gbm_backend = "nvidia-drm";
-  __glx_vendor_library_name = "nvidia";
-  xdg_current_desktop = "qtile";
-  wlr_no_hardware_cursors = "1";
-  nixos_ozone_wl = "1";
-  moz_enable_wayland = "1";
-  editor = "nvim";
-};
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_DATA_HOME = "$HOME/.local/share";
+
+    XDG_SESSION_TYPE = "wayland";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+    GDK_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    XDG_CURRENT_DESKTOP = "qtile";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    EDITOR = "nvim";
+  };
+
   # security for screen sharing
   security.polkit.enable = true;
 
@@ -319,5 +312,4 @@ programs.neovim = {
   # before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # did you read the comment?
-
 }
