@@ -115,8 +115,8 @@
   users.users.tom = {
     isNormalUser = true;
     description = "tom";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio"];
-    # extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"]; #VM 
+    # extraGroups = [ "networkmanager" "wheel" "video" "audio"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"]; #VM 
   };
 
   # flakes
