@@ -21,7 +21,10 @@ in {
     };
     "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
   } // lib.mkIf (!isDarwin) {
-    "qtile/config.py".source = ./config/qtile/config.py;
+    "qtile/config.py" = {
+      source = ./config/qtile/config.py;
+      force = true;
+    };
   };
 }
 
