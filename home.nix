@@ -16,7 +16,7 @@ in {
   # Let Home Manager manage the files
   xdg.configFile = {
     "alacritty/alacritty.toml" = {
-      source = /home/tom/mySystem/config/alacritty.toml;
+      source = ./config/alacritty.toml;
       force = true;
     };
     "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
