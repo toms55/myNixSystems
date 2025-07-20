@@ -2,13 +2,18 @@
 # your system.  help is available in the configuration.nix(5) man page
 # and in the nixos manual (accessible by running 'nixos-help').
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
     [ # include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+  home-manager.users.tom = import ../home.nix {
+    inherit config pkgs lib;
+  };
+ 
 
   # bootloader.
   boot.loader.systemd-boot.enable = true;
