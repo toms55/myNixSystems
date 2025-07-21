@@ -151,6 +151,7 @@
     wget
     home-manager
     git
+
     neovim
     ripgrep
     nodejs
@@ -278,7 +279,121 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-  };
+
+    extraConfig = {
+      theme = {
+        enable = true;
+        name = "gruvbox";
+        style = "dark";
+      };
+
+      statusline.lualine.enable = true;
+
+      languages = {
+        enableLSP = true;
+        enableFormat = true;
+
+        enableTreesitter = true;
+
+        nix.enable = true;
+        python.enable = true;
+        clang.enable = true;
+        bash.enable = true;
+        sql.enable = true;
+        java.enable = true;
+      };
+      
+      autocomplete.blink-cmp.enable = true;
+      autopairs.nvim-autopairs.enable = true;
+      tabline.nvimBufferLine.enable = true;
+      file-explorer.neo-tree.enable = true;
+      treesitter.context.enable = true;
+      telescope.enable = true;
+      minimap.codewindow.enable = true;
+
+      dashboard = {
+        dashboard-nvim.enable = false;
+        alpha.enable = true;
+      };
+
+      notify = {
+        nvim-notify.enable = true;
+      };
+
+      utility = {
+        ccc.enable = false;
+        vim-wakatime.enable = false;
+        diffview-nvim.enable = true;
+        yanky-nvim.enable = false;
+        icon-picker.enable = true;
+        surround.enable = true;
+        multicursors.enable = true;
+        smart-splits.enable = true;
+
+        motion = {
+          hop.enable = true;
+          leap.enable = true;
+          precognition.enable = true;
+        };
+        images = {
+          image-nvim.enable = false;
+          img-clip.enable = true;
+        };
+      };
+
+      binds = {
+        whichKey.enable = true;
+        cheatsheet.enable = true;
+        hardtime-nvim.enable = true;
+      };
+
+      terminal = {
+        toggleterm = {
+          enable = true;
+          lazygit.enable = true;
+        };
+      };
+
+      ui = {
+        borders.enable = true;
+        noice.enable = true;
+        colorizer.enable = true;
+        modes-nvim.enable = false; # the theme looks terrible with catppuccin
+        illuminate.enable = true;
+        breadcrumbs = {
+          enable = true;
+          navbuddy.enable = true;
+        };
+        smartcolumn = {
+          enable = true;
+          setupOpts.custom_colorcolumn = {
+            # this is a freeform module, it's `buftype = int;` for configuring column position
+            nix = "110";
+            java = "130";
+          };
+        };
+        fastaction.enable = true;
+      };
+
+      session = {
+        nvim-session-manager.enable = false;
+      };
+
+      gestures = {
+        gesture-nvim.enable = false;
+      };
+
+      comments = {
+        comment-nvim.enable = true;
+      };
+
+      presence = {
+        neocord.enable = false;
+      };
+
+      git.enable = true;
+      };
+    };
 
   environment.sessionVariables = {
     GTK_THEME = "adwaita:dark";

@@ -6,8 +6,9 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nvf.url = "github:notashelf/nvf";
   };
-  outputs = { self, nixpkgs, darwin, home-manager, ... }: {
+  outputs = { self, nixpkgs, darwin, home-manager, nvf, ... }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
