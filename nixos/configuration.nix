@@ -151,7 +151,10 @@
     wget
     home-manager
     git
+
     neovim
+    lua-language-server
+
     ripgrep
     nodejs
     python3

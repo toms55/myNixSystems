@@ -78,6 +78,7 @@ M.defaults = function()
     vim.lsp.enable "lua_ls"
   else
     require("lspconfig").lua_ls.setup {
+      cmd = { "lua-language-server" },
       capabilities = M.capabilities,
       on_init = M.on_init,
       settings = lua_lsp_settings,

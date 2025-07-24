@@ -78,4 +78,12 @@ M.mappings = {
   }
 }
 
+M.options = {
+  opt = {
+    colorcolumn = "130", -- show visual guide at column 80
+    textwidth = 130,     -- wrap text at 80 chars with `gq` or in comments
+  },
+  g = {},
+}
+
 return M
