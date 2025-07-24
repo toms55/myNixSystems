@@ -169,7 +169,7 @@
     clang-tools
     unzip
 
-    alacritty
+    st-snazzy
     zsh
 
     poetry

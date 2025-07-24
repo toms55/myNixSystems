@@ -6,7 +6,7 @@ import subprocess
 import os
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "st" 
 
 keys = [
     # A list of available commands that can be bound to keys can be found
