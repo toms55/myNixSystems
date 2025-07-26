@@ -14,13 +14,10 @@ in {
   programs.neovim.enable = true;
 
   # Let Home Manager manage the files
-  xdg.configFile = {
-    "alacritty/alacritty.toml" = {
-      source = ./config/alacritty.toml;
-      force = true;
-    };
+  xdg.configFile = {  
     "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
-  } // lib.mkIf (!isDarwin) {
+  } 
+  // lib.mkIf (!isDarwin) {
     "qtile/config.py" = {
       source = ./config/qtile/config.py;
       force = true;
