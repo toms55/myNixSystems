@@ -184,9 +184,6 @@
     spotify
     discord
     
-    mono
-    wineWowPackages.full
-
     zoom-us
     gimp
     anki-bin
@@ -249,7 +246,6 @@
 
     # system monitoring
     htop
-    btop
     
     xorg.xkill
     killall
