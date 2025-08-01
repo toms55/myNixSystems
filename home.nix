@@ -13,16 +13,13 @@ in {
   programs.alacritty.enable = true;
   programs.neovim.enable = true;
 
-  xdg.configFile = 
-    let
-      nvimConfig = builtins.path { path = ./config/nvim/lua/custom/chadrc.lua; };
-      qtileConfig = builtins.path { path = ./config/qtile/config.py; };
-    in
-    {
-      "nvim/lua/custom/chadrc.lua".source = nvimConfig;
-    } // lib.mkIf (!isDarwin) {
+  # Let Home Manager manage the files
+  xdg.configFile = {  
+    "nvim/lua/custom/chadrc.lua".source = ./config/nvim/lua/custom/chadrc.lua;
+  } 
+  // lib.mkIf (!isDarwin) {
     "qtile/config.py" = {
-      source = qtileConfig;
+      source = ./config/qtile/config.py;
       force = true;
     };
   };
