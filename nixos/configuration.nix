@@ -183,7 +183,9 @@
     
     spotify
     discord
-    
+
+    libretro.gambatte
+
     zoom-us
     gimp
     anki-bin
