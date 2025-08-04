@@ -2,7 +2,7 @@
 # your system.  help is available in the configuration.nix(5) man page
 # and in the nixos manual (accessible by running 'nixos-help').
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports =
@@ -77,7 +77,17 @@
     ];
   };
   
-  # boot.kernelpackages = pkgs.linuxpackages_latest;
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [
+      "--update-input" "nixpkgs"
+      "--commit-lock-file"
+      "-L"
+    ];
+    dates = "weekly";
+    persistent = true;
+  };
 
   hardware.nvidia = {
     open = false;
@@ -129,10 +139,6 @@
 
   # allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  systemd.timers.nixos-auto-upgrade = {
-    timerConfig.persistent = true;
-  };
 
   fonts.packages = with pkgs; [
     noto-fonts

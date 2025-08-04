@@ -7,7 +7,8 @@
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, darwin, home-manager, ... }: {
+  
+  outputs = inputs@{ self, nixpkgs, darwin, home-manager, ... }: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -15,11 +16,7 @@
           ./nixos/configuration.nix
           ./nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.tom = import ./home.nix;
-          }
+          { _module.args = { inherit inputs; }; }
         ];
       };
     };
