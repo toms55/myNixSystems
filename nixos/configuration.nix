@@ -180,7 +180,8 @@
 
     brave
     firefox
-    
+    mullvad-browser
+
     spotify
     discord
 
