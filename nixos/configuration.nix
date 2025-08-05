@@ -88,15 +88,23 @@
     dates = "weekly";
     persistent = true;
   };
-
+  
+  # services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = false;
     modesetting.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     powerManagement.enable = true;
+    nvidiaSettings = true;
+    forceFullCompositionPipeline = true;
   };
 
-  boot.kernelParams = [ "nvidia_drm.modeset=1" ];
+  boot.kernelParams = [
+    "nvidia_drm.modeset=1"
+    "nvidia_drm.fbdev=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "nvidia.NVreg_UsePageAttributeTable=1"
+  ];
   
   # vm stuff
   virtualisation.libvirtd.enable = true;
@@ -204,7 +212,8 @@
 
     # qtile
     python3Packages.qtile
-
+    wlr-randr
+    
     wofi
     nh
 
@@ -295,6 +304,8 @@
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_DATA_HOME = "$HOME/.local/share";
+
+    XWAYLAND_VIDEOSYNC = "1";
 
     XDG_SESSION_TYPE = "wayland";
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
