@@ -1,7 +1,6 @@
-{ config, pkgs, lib, ... }:
-
-let
-  isDarwin = pkgs.stdenv.isDarwin;
+{ config, pkgs, lib, ... }: 
+let 
+  isDarwin = pkgs.stdenv.isDarwin; 
 in {
   home = {
     username = "tom";
@@ -12,10 +11,19 @@ in {
   programs.zsh.enable = true;
   programs.alacritty.enable = true;
 
+  # Enable neovim through home-manager
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
+
   home.file = {
     ".config/nvim" = {
       source = ./config/nvim;
       recursive = true;
+      copy = true;
     };
   } // lib.mkIf (!isDarwin) {
     ".config/qtile/config.py" = {

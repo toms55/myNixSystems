@@ -10,10 +10,12 @@
       ./hardware-configuration.nix
     ];
 
-  home-manager.users.tom = import ../home.nix {
-    inherit config pkgs lib;
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.tom = import ../home.nix;
+    extraSpecialArgs = { inherit inputs; };  # Pass inputs to home.nix
   };
- 
 
   # bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -158,9 +160,6 @@
     home-manager
     git
 
-    neovim
-    lua-language-server
-
     ripgrep
     nodejs
     python3
@@ -172,6 +171,11 @@
     vscode
     python3Packages.notebook
     rstudio
+
+    gcc
+    gnumake
+    pkg-config
+    clang
     clang-tools
     unzip
 
@@ -280,13 +284,6 @@
 
     udiskie
   ];
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
 
   environment.sessionVariables = {
     GTK_THEME = "adwaita:dark";
