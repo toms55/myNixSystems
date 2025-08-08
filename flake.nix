@@ -1,5 +1,5 @@
 {
-   escription = "nixOS and macOS config";
+  description = "nixOS and macOS config";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     darwin.url = "github:lnl7/nix-darwin/nix-darwin-25.05";
