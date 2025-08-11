@@ -31,6 +31,11 @@
   # enable networking
   networking.networkmanager.enable = true;
 
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.gutenprint ];
+  };
+
   # set your time zone.
   time.timeZone = "Australia/Sydney";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -107,9 +112,6 @@
   # enable wayland support globally
   programs.xwayland.enable = true;
 
-  # enable cups to print documents.
-  services.printing.enable = true;
-
   # enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -133,7 +135,7 @@
     isNormalUser = true;
     description = "tom";
     # extraGroups = [ "networkmanager" "wheel" "video" "audio"];
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm"]; #VM 
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm" "lp"];
   };
 
   # flakes
