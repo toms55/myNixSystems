@@ -236,6 +236,7 @@
     xdg-desktop-portal
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
+    egl-wayland
 
     # audio control
     pavucontrol
@@ -279,9 +280,6 @@
     python3Packages.psutil
     python3Packages.pulsectl
     
-    # nvidia specific for wayland
-    egl-wayland
-
     udiskie
   ];
 
