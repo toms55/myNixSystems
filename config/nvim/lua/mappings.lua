@@ -7,8 +7,6 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-
 local function run_current_file()
   local filetype = vim.bo.filetype
   local filepath = vim.fn.expand('%')
@@ -31,7 +29,6 @@ local function run_current_file()
   end
 end
 
--- Add your custom mappings
 map("n", "<leader>r", function()
   vim.cmd('w')
   run_current_file()
