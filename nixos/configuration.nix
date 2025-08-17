@@ -66,24 +66,20 @@
 
   hardware.graphics = {
     enable = true;
-    enable32Bit = true;  # was driSupport32Bit
+    enable32Bit = true;
 
     extraPackages = with pkgs; [
       vulkan-loader
       vulkan-tools
-      vulkan-validation-layers
       nvidia-vaapi-driver
-      vaapiVdpau
-      libvdpau-va-gl
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
       vulkan-loader
-      vulkan-tools
       nvidia-vaapi-driver
     ];
-  };
-  
+  };  
+
   system.autoUpgrade = {
     enable = true;
     flake = inputs.self.outPath;
@@ -102,6 +98,10 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     powerManagement.enable = true;
   };
+
+  programs.steam.enable = true;
+  programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
 
   boot.kernelParams = [ "nvidia_drm.modeset=1" ];
   
@@ -196,8 +196,7 @@
 
     spotify
     discord
-
-    libretro.gambatte
+    protonup
 
     zoom-us
     gimp
@@ -292,6 +291,8 @@
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_DATA_HOME = "$HOME/.local/share";
+
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "home/user/.steam/root/compatabilitytools.d";
 
     XDG_SESSION_TYPE = "wayland";
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
