@@ -174,35 +174,9 @@ tokyo_colors = {
 }
 
 def create_bar(is_primary):
-    
-    # def get_weather():
-    #     try:
-    #         # Run curl with a 5-second timeout
-    #         return subprocess.check_output(
-    #             ["curl", "-s", "wttr.in/Sydney?format=1"],
-    #             timeout=5,
-    #             text=True
-    #         ).strip()
-    #     except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
-    #         # If it fails or times out, return a default string
-    #         return " Weather N/A"
-    #
     widgets = []
 
-    # if not is_primary:
-    #     widgets.extend([
-    #         widget.GenPollText(
-    #             update_interval=1800,  # every 30 minutes
-    #             func=get_weather,
-    #             foreground=tokyo_colors["blue"],
-    #             background=tokyo_colors["bg"],
-    #             padding=6
-    #         ),
-    #     ])
-
-
-    if is_primary:
-        widgets.extend([
+    widgets.append(
             widget.GroupBox(
                 font="JetBrainsMono Nerd Font",
                 fontsize=12,
@@ -222,8 +196,11 @@ def create_bar(is_primary):
                 disable_drag=True,
                 background=tokyo_colors["bg"],
                 hide_unused=True
-            ),
-        ])
+            )
+        )
+
+    if is_primary:
+        pass
 
     widgets.extend([
         widget.Prompt(
@@ -249,6 +226,26 @@ def create_bar(is_primary):
 
     if not is_primary:
         widgets.extend([
+            widget.GroupBox(
+                font="JetBrainsMono Nerd Font",
+                fontsize=12,
+                margin_y=3,
+                margin_x=6,
+                padding_y=5,
+                padding_x=8,
+                borderwidth=2,
+                active=tokyo_colors["fg"],
+                inactive=tokyo_colors["grey"],
+                rounded=False,
+                highlight_method="line",
+                this_current_screen_border=tokyo_colors["blue"],
+                this_screen_border=tokyo_colors["purple"],
+                other_current_screen_border=tokyo_colors["grey"],
+                other_screen_border=tokyo_colors["grey"],
+                disable_drag=True,
+                background=tokyo_colors["bg"],
+                hide_unused=True
+            ),
             widget.CPU(
                 format='{load_percent}%',
                 foreground=tokyo_colors["green"],
