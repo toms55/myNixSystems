@@ -195,6 +195,7 @@
     mullvad-browser
 
     spotify
+    cava
     discord
     protonup
 
