@@ -20,6 +20,7 @@
       NewWindowTargetPath = "file://${builtins.getEnv "HOME"}/";
     };
   };
+
   security.pam.services.sudo_local.touchIdAuth = true;
   programs.zsh.enable = true;
   
@@ -43,7 +44,16 @@
       echo "Created nvim config symlink"
     fi
   '';
-  
+ 
+  services.skhd = {
+    enable = true;
+    skhdConfig = ''
+      # Launch Alacritty with Cmd+Enter
+      cmd - return : open -na Alacritty
+    '';
+  };
+
+
   environment.systemPackages = with pkgs; [
     neovim
     git
@@ -56,8 +66,10 @@
     discord
     spotify
   ];
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
+
   ids.gids.nixbld = 350;
 }
