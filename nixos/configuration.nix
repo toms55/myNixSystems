@@ -174,11 +174,7 @@
     python3Packages.notebook
     rstudio
 
-    gcc
-    gnumake
     pkg-config
-    clang
-    clang-tools
     unzip
 
     st-snazzy
