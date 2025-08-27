@@ -49,7 +49,7 @@
     enable = true;
     skhdConfig = ''
       # Launch Alacritty with Cmd+Enter
-      cmd - return : open -na Alacritty
+      ctrl - return : open -na Alacritty
     '';
   };
 
