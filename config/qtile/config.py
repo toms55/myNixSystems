@@ -118,7 +118,7 @@ for i in groups:
             ),
             # mod + shift + group number = switch to & move focused window to group
             Key(
-                [mod, "shift"],
+                ["mod1"], #alt
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
                 desc=f"Switch to & move focused window to group {i.name}",
