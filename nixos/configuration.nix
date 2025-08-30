@@ -172,7 +172,7 @@
     fastfetch
     vscode
     python3Packages.notebook
-    rstudio
+    docker
 
     pkg-config
     unzip
