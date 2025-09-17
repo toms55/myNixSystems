@@ -6,6 +6,7 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
+map("n", "<D-CR>", "o<Esc>", { desc = "New line below (normal mode)" })
 
 local function run_current_file()
   local filetype = vim.bo.filetype
