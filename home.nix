@@ -24,9 +24,9 @@ in {
       source = ./config/nvim;
       recursive = true;
     };
-  } // lib.mkIf (!isDarwin) {
-    ".config/qtile/config.py" = {
-      source = ./config/qtile/config.py;
-    };
-  };
+  }; # // lib.mkIf (!isDarwin) {
+  #   ".config/awesome/rc.lua" = {
+  #     source = ./config/awesome/rc.lua;
+  #   };
+  # };
 }
