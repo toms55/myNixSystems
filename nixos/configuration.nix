@@ -36,10 +36,6 @@
     enable = true;
     videoDrivers = [ "nvidia" ];
     
-    displayManager = {
-      lightdm.enable = true;
-    };
-    
     windowManager.awesome = {
       enable = true;
       luaModules = with pkgs.luaPackages; [
@@ -47,6 +43,10 @@
         luadbi-mysql
       ];
     };
+  };
+
+  services.displayManager.ly = {
+    enable = true;
   };
 
   hardware.nvidia = {
@@ -119,7 +119,6 @@
     luajit
     fastfetch
     vscode
-    python3Packages.notebook
 
     pkg-config
     unzip
@@ -138,7 +137,6 @@
     mullvad-browser
 
     spotify
-    cava
     discord
     protonup
 
@@ -151,34 +149,18 @@
     tor-browser-bundle-bin
     virt-manager
 
-    wofi
+    rofi 
     nh
 
-    wayland
-    wayland-protocols
-    wayland-utils
     xwayland
 
-    # clipboard and selection
-    wl-clipboard
-    clipman
+    xclip  
 
-    # screenshot and screen recording
-    grim
-    slurp
-    swappy
-    wf-recorder
     obs-studio
 
     # notification daemon
     mako
     libnotify
-
-    # screen sharing and portals
-    xdg-desktop-portal
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    egl-wayland
 
     # audio control
     pavucontrol
@@ -186,16 +168,8 @@
     playerctl
     pamixer
 
-    # brightness control
-    brightnessctl
-    wlsunset
-
     # file manager
     xfce.thunar
-
-    # image viewer
-    imv
-    feh
 
     # network management
     networkmanagerapplet
@@ -206,18 +180,7 @@
     xorg.xkill
     killall
 
-    # additional utilities
-    kanshi
-    wdisplays
-    gammastep
-    
-    # for discord screen sharing specifically
-    pipewire
-    wireplumber
-
-    wlr-randr
-    swaybg
-    swaylock
+    autorandr
 
     python3Packages.psutil
     python3Packages.pulsectl

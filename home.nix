@@ -24,9 +24,9 @@ in {
       source = ./config/nvim;
       recursive = true;
     };
-  }; # // lib.mkIf (!isDarwin) {
-  #   ".config/awesome/rc.lua" = {
-  #     source = ./config/awesome/rc.lua;
-  #   };
-  # };
+  } // lib.mkIf (!isDarwin) {
+    ".config/awesome/rc.lua" = {
+      source = ./config/awesome/rc.lua;
+    };
+  };
 }
