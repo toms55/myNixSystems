@@ -64,6 +64,7 @@
   programs.virt-manager.enable = true;
   programs.xwayland.enable = true;
   programs.steam.enable = true;
+  programs.gamescope.enable = true;
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -119,6 +120,8 @@
     luajit
     fastfetch
     vscode
+
+    gamemode
 
     pkg-config
     unzip
@@ -188,9 +191,9 @@
     udiskie
   ];
 
-  # environment.sessionVariables = {
-  # };
-
+  environment.etc."xdg/awesome/rc.lua" = {
+    source = ../config/awesome/rc.lua; 
+  };
   # this value determines the nixos release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. it's perfectly fine and recommended to leave
