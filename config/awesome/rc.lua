@@ -306,7 +306,26 @@ globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    -- Volume Control
+    awful.key({ }, "XF86AudioRaiseVolume",
+        function () awful.spawn.with_shell("pamixer -i 4") end,
+        {description = "raise volume by 4", group = "media"}),
+    awful.key({ }, "XF86AudioLowerVolume",
+        function () awful.spawn.with_shell("pamixer -d 4") end,
+        {description = "lower volume by 4", group = "media"}),
+
+    -- Media Player Control (using playerctl)
+    awful.key({ }, "XF86AudioPrev",
+        function () awful.spawn.with_shell("playerctl previous") end,
+        {description = "previous track", group = "media"}),
+    awful.key({ }, "XF86AudioNext",
+        function () awful.spawn.with_shell("playerctl next") end,
+        {description = "next track", group = "media"}),
+    awful.key({ }, "XF86AudioPlay",
+        function () awful.spawn.with_shell("playerctl play-pause") end,
+        {description = "play/pause", group = "media"})
 )
 
 clientkeys = gears.table.join(
@@ -435,6 +454,17 @@ awful.rules.rules = {
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
      }
+    },
+
+    { rule = { class = "gamescope" },
+      properties = { 
+          floating = true,
+          border_width = 0,
+          fullscreen = true,
+          ontop = true,
+          sticky = true,
+          placement = awful.placement.no_overlap+awful.placement.no_offscreen 
+      }
     },
 
     -- Floating clients.
