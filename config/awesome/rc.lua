@@ -316,7 +316,7 @@ globalkeys = gears.table.join(
         function () awful.spawn.with_shell("pamixer -d 4") end,
         {description = "lower volume by 4", group = "media"}),
 
-    -- Media Player Control (using playerctl)
+    -- Media Player Control
     awful.key({ }, "XF86AudioPrev",
         function () awful.spawn.with_shell("playerctl previous") end,
         {description = "previous track", group = "media"}),
@@ -325,7 +325,12 @@ globalkeys = gears.table.join(
         {description = "next track", group = "media"}),
     awful.key({ }, "XF86AudioPlay",
         function () awful.spawn.with_shell("playerctl play-pause") end,
-        {description = "play/pause", group = "media"})
+        {description = "play/pause", group = "media"}),
+    
+    -- Screenshot - Added Keybinding
+    awful.key({}, "Print",
+        function () awful.spawn.with_shell("scrot -s 'screenshot-%Y-%m-%d-%H-%M-%S.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f'") end,
+        {description = "Take area selection screenshot to clipboard", group = "screenshot"})
 )
 
 clientkeys = gears.table.join(

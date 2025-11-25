@@ -147,6 +147,7 @@
     gimp
     anki-bin
     libreoffice
+    zotero
 
     calibre
     tor-browser-bundle-bin
@@ -158,26 +159,22 @@
     xwayland
 
     xclip  
+    scrot
 
     obs-studio
 
-    # notification daemon
     mako
     libnotify
 
-    # audio control
     pavucontrol
     pulsemixer
     playerctl
     pamixer
 
-    # file manager
     xfce.thunar
 
-    # network management
     networkmanagerapplet
 
-    # system monitoring
     htop
     
     xorg.xkill
