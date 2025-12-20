@@ -96,7 +96,7 @@
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols
@@ -141,7 +141,7 @@
 
     spotify
     discord
-    protonup
+    protonup-ng
 
     zoom-us
     gimp
@@ -150,7 +150,7 @@
     zotero
 
     calibre
-    tor-browser-bundle-bin
+    tor-browser
     virt-manager
 
     rofi 
