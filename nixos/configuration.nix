@@ -138,6 +138,7 @@
 
     brave
     firefox
+    lynx
     mullvad-browser
 
     spotify
