@@ -60,11 +60,6 @@
     alacritty
     
     tree
-    
-    firefox
-    brave
-    discord
-    spotify
   ];
 
   fonts.packages = with pkgs; [
