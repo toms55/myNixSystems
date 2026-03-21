@@ -120,6 +120,7 @@
     luajit
     fastfetch
     vscode
+    rstudio
     gcc
 
     gamemode
