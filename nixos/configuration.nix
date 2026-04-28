@@ -81,7 +81,10 @@
     openFirewall = true;
   };
 
-  services.dbus.enable = true;
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins;
+  };
 
   users.users.tom = {
     isNormalUser = true;
@@ -120,7 +123,7 @@
     luajit
     fastfetch
     vscode
-    rstudio
+    
     gcc
 
     gamemode
@@ -158,6 +161,7 @@
 
     rofi 
     nh
+    openrgb
 
     xwayland
 
@@ -191,6 +195,9 @@
     udiskie
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-38.8.4"
+  ];
   environment.etc."xdg/awesome/rc.lua" = {
     source = ../config/awesome/rc.lua; 
   };
