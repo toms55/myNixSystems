@@ -53,8 +53,6 @@ awful.layout.layouts = {
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw,
 }
 
 -- Helper functions
@@ -125,6 +123,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "Return", function () awful.spawn(terminal) end, {description = "open terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart, {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift" }, "q", awesome.quit, {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey }, "p", function() menubar.show() end, {description = "show the menubar", group = "launcher"}),
 
     -- Layout selection
     awful.key({ modkey }, "space", function () awful.layout.inc( 1) end),
@@ -132,6 +131,9 @@ globalkeys = gears.table.join(
 
     -- Prompts
     awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end),
+
+    -- Open apps
+    awful.key({ modkey }, "s", function () awful.spawn("firefox") end, {description = "launch firefox", group = "launcher"}),
 
     -- Volume
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn.with_shell("pamixer -i 4") end),
@@ -186,7 +188,8 @@ awful.rules.rules = {
         raise = true,
         keys = clientkeys,
         screen = awful.screen.preferred,
-        placement = awful.placement.no_overlap+awful.placement.no_offscreen
+        placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+        titlebars_enabled = false
       }
     },
     -- Gaming rule
