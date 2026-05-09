@@ -92,7 +92,18 @@
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm" "lp"];
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store = true;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
+  boot.loader.systemd-boot.configurationLimit = 7;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -149,7 +160,6 @@
     discord
     protonup-ng
 
-    zoom-us
     gimp
     anki-bin
     libreoffice
