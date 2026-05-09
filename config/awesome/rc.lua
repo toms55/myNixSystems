@@ -113,7 +113,7 @@ globalkeys = gears.table.join(
     -- Client Focus
     awful.key({ modkey }, "j", function () awful.client.focus.byidx( 1) end, {description = "focus next", group = "client"}),
     awful.key({ modkey }, "k", function () awful.client.focus.byidx(-1) end, {description = "focus prev", group = "client"}),
-
+    awful.key({ modkey }, ".", function () awful.screen.focus_relative( 1) end, {description = "focus the next screen", group = "screen"}),
     -- Layout Manipulation
     awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx( 1) end, {description = "swap next", group = "client"}),
     awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx(-1) end, {description = "swap prev", group = "client"}),
@@ -211,9 +211,9 @@ client.connect_signal("manage", function (c)
     end
 end)
 
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
+-- client.connect_signal("mouse::enter", function(c)
+--     c:emit_signal("request::activate", "mouse_enter", {raise = false})
+-- end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
