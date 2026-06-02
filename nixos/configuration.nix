@@ -151,8 +151,8 @@
     adwaita-icon-theme
     adw-gtk3
 
-    brave
     firefox
+    brave
     lynx
     mullvad-browser
 

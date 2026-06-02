@@ -38,9 +38,9 @@ end
 -- Variables
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
-modkey   = "Mod4"
+modkey = "Mod4"
 terminal = "st"
-editor   = os.getenv("EDITOR") or "nvim"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Layouts
@@ -211,9 +211,13 @@ client.connect_signal("manage", function (c)
     end
 end)
 
--- client.connect_signal("mouse::enter", function(c)
---     c:emit_signal("request::activate", "mouse_enter", {raise = false})
--- end)
+client.connect_signal("mouse::enter", function(c)
+    c:emit_signal("request::activate", "mouse_enter", {raise = false})
+end)
+
+beautiful.border_focus  = "#333333"
+beautiful.border_normal = "#333333"
+beautiful.border_width  = 1 
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

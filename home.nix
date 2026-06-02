@@ -11,7 +11,6 @@ in {
   programs.zsh.enable = true;
   programs.alacritty.enable = true;
 
-  # Enable neovim through home-manager
   programs.neovim = {
     enable = true;
     defaultEditor = true;
