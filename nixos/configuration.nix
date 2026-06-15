@@ -133,8 +133,7 @@
     lua
     luajit
     fastfetch
-    vscode
-    
+    gemini-cli
     gcc
 
     gamemode
