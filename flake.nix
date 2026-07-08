@@ -14,7 +14,6 @@
         system = "x86_64-linux";
         modules = [
           ./nixos/configuration.nix
-          ./nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
           { _module.args = { inherit inputs; }; }
         ];

@@ -1,95 +1,41 @@
-# edit this configuration file to define what should be installed on
-# your system.  help is available in the configuration.nix(5) man page
-# and in the nixos manual (accessible by running 'nixos-help').
-
 { config, pkgs, lib, inputs, ... }:
 
 {
-  imports =
-    [ # include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./hardware.nix
+    ./audio.nix
+    ./desktop.nix
+    ./gaming.nix
+    ./packages.nix
+  ];
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
     users.tom = import ../home.nix;
-    extraSpecialArgs = { inherit inputs; };  # Pass inputs to home.nix
+    extraSpecialArgs = { inherit inputs; };
   };
 
-  # bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 7;
 
-  networking.hostName = "nixos"; 
+  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+
+  time.timeZone = "Australia/Sydney";
+  i18n.defaultLocale = "en_AU.UTF-8";
 
   services.printing = {
     enable = true;
     drivers = [ pkgs.gutenprint ];
   };
 
-  time.timeZone = "Australia/Sydney";
-  i18n.defaultLocale = "en_AU.UTF-8";
-
-  services.xserver = {
-    enable = true;
-    videoDrivers = [ "nvidia" ];
-    
-    windowManager.awesome = {
-      enable = true;
-      luaModules = with pkgs.luaPackages; [
-        luarocks
-        luadbi-mysql
-      ];
-    };
-  };
-
-  services.displayManager.ly = {
-    enable = true;
-  };
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  hardware.graphics.enable = true;
-
-  virtualisation.libvirtd.enable = true;
-
-  programs.virt-manager.enable = true;
-  programs.xwayland.enable = true;
-  programs.steam.enable = true;
-  programs.gamescope.enable = true;
-
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
-  };
-
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
-  services.hardware.openrgb = {
-    enable = true;
-    package = pkgs.openrgb-with-all-plugins;
-  };
-
   users.users.tom = {
     isNormalUser = true;
     description = "tom";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm" "lp"];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "libvirtd" "kvm" "lp" ];
   };
 
   nix.settings = {
@@ -103,118 +49,7 @@
     options = "--delete-older-than 7d";
   };
 
-  boot.loader.systemd-boot.configurationLimit = 7;
-
   nixpkgs.config.allowUnfree = true;
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts
-    nerd-fonts.jetbrains-mono
-  ];
-
-  environment.systemPackages = with pkgs; [
-    wget
-    home-manager
-    git
-
-    ripgrep
-    nodejs
-    python3
-    tree-sitter
-    tree
-    lua
-    luajit
-    fastfetch
-    gemini-cli
-    gcc
-
-    gamemode
-
-    pkg-config
-    unzip
-
-    st-snazzy
-    zsh
-
-    poetry
-    python3Packages.pip
-    
-    adwaita-icon-theme
-    adw-gtk3
-
-    firefox
-    brave
-    lynx
-    mullvad-browser
-
-    spotify
-    discord
-    protonup-ng
-
-    gimp
-    anki-bin
-    libreoffice
-    zotero
-
-    calibre
-    tor-browser
-    virt-manager
-
-    rofi 
-    nh
-    openrgb
-
-    xwayland
-
-    xclip  
-    scrot
-
-    obs-studio
-
-    mako
-    libnotify
-
-    pavucontrol
-    pulsemixer
-    playerctl
-    pamixer
-
-    xfce.thunar
-
-    networkmanagerapplet
-
-    htop
-    
-    xorg.xkill
-    killall
-
-    autorandr
-
-    python3Packages.psutil
-    python3Packages.pulsectl
-    
-    udiskie
-  ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-38.8.4"
-  ];
-  environment.etc."xdg/awesome/rc.lua" = {
-    source = ../config/awesome/rc.lua; 
-  };
-  # this value determines the nixos release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. it's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # did you read the comment?
-  }
+  system.stateVersion = "24.11";
+}

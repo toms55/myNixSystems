@@ -19,12 +19,11 @@ in {
   };
 
   home.file = {
-	  ".config/nvim" = {
-	    source = ./config/nvim;
-	    recursive = true;
-	  };
-	  ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
-	    source = ./config/awesome/rc.lua;
-	  };
-	}; 
+    ".config/nvim" = {
+      source = config.lib.file.mkOutOfStoreSymlink /home/tom/mySystem/config/nvim;
+    };
+    ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
+      source = ./config/awesome/rc.lua;
+    };
+  };
 }
