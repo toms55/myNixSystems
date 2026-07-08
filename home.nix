@@ -1,6 +1,6 @@
-{ config, pkgs, lib, ... }: 
-let 
-  isDarwin = pkgs.stdenv.isDarwin; 
+{ config, pkgs, lib, ... }:
+let
+  isDarwin = pkgs.stdenv.isDarwin;
 in {
   home = {
     username = "tom";
@@ -11,16 +11,18 @@ in {
   programs.zsh.enable = true;
   programs.alacritty.enable = true;
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
+  home.packages = [ pkgs.neovim ];
+
+  home.sessionVariables.EDITOR = "nvim";
+
+  home.shellAliases = {
+    vi = "nvim";
+    vim = "nvim";
   };
 
   home.file = {
     ".config/nvim" = {
-      source = config.lib.file.mkOutOfStoreSymlink /home/tom/mySystem/config/nvim;
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/mySystem/config/nvim";
     };
     ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
       source = ./config/awesome/rc.lua;
