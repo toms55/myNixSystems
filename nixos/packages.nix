@@ -20,8 +20,11 @@
 
     gamemode
 
+    prettier
+
     pkg-config
     unzip
+    zip
 
     st-snazzy
     zsh

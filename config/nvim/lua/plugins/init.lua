@@ -4,8 +4,10 @@ return {
     -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
-
-  -- These are some examples, uncomment them if you want to see them work!
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = "markdown",
+  },
   {
     "neovim/nvim-lspconfig",
     config = function()
