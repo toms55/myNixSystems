@@ -19,7 +19,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 7;
+  boot.loader.systemd-boot.configurationLimit = 3;
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -46,7 +46,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 10d";
   };
 
   nixpkgs.config.allowUnfree = true;
