@@ -14,6 +14,16 @@
         system = "x86_64-linux";
         modules = [
           ./nixos/configuration.nix
+          ./nixos/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+          { _module.args = { inherit inputs; }; }
+        ];
+      };
+      nixos-ssd = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./nixos/configuration.nix
+          ./nixos/hardware-configuration-ssd.nix
           home-manager.nixosModules.home-manager
           { _module.args = { inherit inputs; }; }
         ];

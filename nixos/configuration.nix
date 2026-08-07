@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
     ./hardware.nix
     ./audio.nix
     ./desktop.nix
