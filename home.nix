@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
+  btHeadphonesMAC = "88:92:CC:3C:A0:A5";
 in {
   home = {
     username = "tom";
@@ -18,6 +19,31 @@ in {
   home.shellAliases = {
     vi = "nvim";
     vim = "nvim";
+  };
+
+  systemd.user.services.bt-headphone-autoconnect = lib.mkIf (!isDarwin) {
+    Unit = {
+      Description = "Auto-connect Sony WH-CH720N Bluetooth headphones";
+      After = [ "default.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "bt-connect-headphones" ''
+        MAC="${btHeadphonesMAC}"
+        # Give bluetooth stack time to settle after login
+        sleep 8
+        for attempt in 1 2 3 4 5; do
+          if ${pkgs.bluez}/bin/bluetoothctl connect "$MAC"; then
+            exit 0
+          fi
+          sleep 6
+        done
+      ''}";
+      RemainAfterExit = "yes";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
   };
 
   home.file = {
