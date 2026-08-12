@@ -48,7 +48,7 @@ in {
 
   home.file = {
     ".config/nvim" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/mySystem/config/nvim";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/myNixSystems/config/nvim";
     };
     ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
       source = ./config/awesome/rc.lua;
