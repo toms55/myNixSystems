@@ -16,7 +16,7 @@
           ./nixos/configuration.nix
           ./nixos/hardware-configuration.nix
           home-manager.nixosModules.home-manager
-          { _module.args = { inherit inputs; }; }
+          { _module.args = { inherit inputs; hasBluetooth = false; }; }
         ];
       };
       nixos-ssd = nixpkgs.lib.nixosSystem {
@@ -25,7 +25,7 @@
           ./nixos/configuration.nix
           ./nixos/hardware-configuration-ssd.nix
           home-manager.nixosModules.home-manager
-          { _module.args = { inherit inputs; }; }
+          { _module.args = { inherit inputs; hasBluetooth = true; }; }
         ];
       };
     };
@@ -39,6 +39,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.tom = import ./home.nix;
+            home-manager.extraSpecialArgs = { hasBluetooth = false; };
           }
         ];
       };
@@ -47,6 +48,7 @@
     homeConfigurations = {
       "tom@nixos" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = { hasBluetooth = false; };
         modules = [ ./home.nix ];
       };
    };

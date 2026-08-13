@@ -27,7 +27,7 @@
   services.skhd = {
     enable = true;
     skhdConfig = ''
-      # Launch Alacritty with Cmd+Enter
+      # Launch Alacritty (auto-attaches tmux) with Ctrl+Enter
       ctrl - return : open -na Alacritty
     '';
   };

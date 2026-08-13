@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hasBluetooth ? false, ... }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
   btHeadphonesMAC = "88:92:CC:3C:A0:A5";
@@ -10,9 +10,43 @@ in {
   };
 
   programs.zsh.enable = true;
-  programs.alacritty.enable = true;
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      window = {
+        decorations = "None";
+        padding = { x = 0; y = 0; };
+        dynamic_padding = false;
+      };
+      colors = {
+        primary = {
+          background = "#1a1a1a";
+          foreground = "#e0e0e0";
+        };
+        cursor = {
+          text = "#1a1a1a";
+          cursor = "#e0e0e0";
+        };
+        normal = {
+          black = "#1a1a1a";
+          red = "#a05050";
+          green = "#5a8a5a";
+          yellow = "#a0945a";
+          blue = "#5a7a9a";
+          magenta = "#8a6a9a";
+          cyan = "#5a9a9a";
+          white = "#e0e0e0";
+        };
+      };
+      cursor.style.shape = "Block";
+      shell = {
+        program = "${pkgs.tmux}/bin/tmux";
+        args = [ "new-session" "-A" "-s" "main" ];
+      };
+    };
+  };
 
-  home.packages = [ pkgs.neovim ];
+  home.packages = [ pkgs.neovim pkgs.tmux ];
 
   home.sessionVariables.EDITOR = "nvim";
 
@@ -21,7 +55,7 @@ in {
     vim = "nvim";
   };
 
-  systemd.user.services.bt-headphone-autoconnect = lib.mkIf (!isDarwin) {
+  systemd.user.services.bt-headphone-autoconnect = lib.mkIf (!isDarwin && hasBluetooth) {
     Unit = {
       Description = "Auto-connect Sony WH-CH720N Bluetooth headphones";
       After = [ "default.target" ];
@@ -52,6 +86,9 @@ in {
     };
     ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
       source = ./config/awesome/rc.lua;
+    };
+    ".tmux.conf" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/myNixSystems/config/tmux/tmux.conf";
     };
   };
 }

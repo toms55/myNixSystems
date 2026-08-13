@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, hasBluetooth ? false, ... }:
 
 {
   imports = [
@@ -13,7 +13,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.tom = import ../home.nix;
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs hasBluetooth; };
   };
 
   boot.loader.systemd-boot.enable = true;

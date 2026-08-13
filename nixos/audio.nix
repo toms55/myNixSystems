@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, hasBluetooth ? false, ... }:
 
 {
   services.pulseaudio.enable = false;
@@ -11,13 +11,13 @@
     wireplumber.enable = true;
   };
 
-  hardware.bluetooth = {
+  hardware.bluetooth = lib.mkIf hasBluetooth {
     enable = true;
     powerOnBoot = true;
     settings.Policy.AutoEnable = true;
   };
 
-  services.blueman.enable = true;
+  services.blueman.enable = hasBluetooth;
 
   services.avahi = {
     enable = true;
