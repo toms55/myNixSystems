@@ -12,6 +12,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
     users.tom = import ../home.nix;
     extraSpecialArgs = { inherit inputs hasBluetooth; };
   };
