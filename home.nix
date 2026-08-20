@@ -39,12 +39,17 @@ in {
         };
       };
       cursor.style.shape = "Block";
-      shell = {
+      terminal.shell = {
         program = "${pkgs.tmux}/bin/tmux";
         args = [ "new-session" "-A" "-s" "main" ];
       };
     };
   };
+
+  # `alacritty migrate` rewrites this file in place, replacing the Home Manager
+  # symlink with a regular file and breaking the next activation. Overwrite it
+  # unconditionally instead of failing on the leftover.
+  xdg.configFile."alacritty/alacritty.toml".force = true;
 
   home.packages = [ pkgs.neovim pkgs.tmux ];
 
