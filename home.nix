@@ -95,5 +95,12 @@ in {
     ".tmux.conf" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/myNixSystems/config/tmux/tmux.conf";
     };
+    # Plugin loader kept out of tmux.conf so the hand-edited config stays free of
+    # store paths. tmux.conf source-files this as its very last line: continuum
+    # hooks itself into status-right, so it must load after status-right is set.
+    ".config/tmux/nix-plugins.conf".text = ''
+      run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux
+      run-shell ${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux
+    '';
   };
 }
