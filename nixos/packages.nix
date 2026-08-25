@@ -73,13 +73,13 @@
     playerctl
     pamixer
 
-    xfce.thunar
+    thunar
 
     networkmanagerapplet
 
     htop
 
-    xorg.xkill
+    xkill
     killall
 
     autorandr
@@ -88,9 +88,5 @@
     python3Packages.pulsectl
 
     udiskie
-  ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-38.8.4"
   ];
 }

@@ -63,7 +63,8 @@ in {
   systemd.user.services.bt-headphone-autoconnect = lib.mkIf (!isDarwin && hasBluetooth) {
     Unit = {
       Description = "Auto-connect Sony WH-CH720N Bluetooth headphones";
-      After = [ "default.target" ];
+      Requires = [ "wireplumber.service" ];
+      After = [ "wireplumber.service" "default.target" ];
     };
     Service = {
       Type = "oneshot";
@@ -82,6 +83,51 @@ in {
     };
     Install = {
       WantedBy = [ "default.target" ];
+    };
+  };
+
+  systemd.user.services.bt-idle-poweroff = lib.mkIf (!isDarwin && hasBluetooth) {
+    Unit = {
+      Description = "Power off Bluetooth after 10 minutes with nothing connected";
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScript "bt-idle-poweroff" ''
+        BTCTL="${pkgs.bluez}/bin/bluetoothctl"
+        STAMP="$XDG_RUNTIME_DIR/bt-last-connected"
+
+        if ! "$BTCTL" show | ${pkgs.gnugrep}/bin/grep -q "Powered: yes"; then
+          exit 0
+        fi
+
+        if [ -n "$("$BTCTL" devices Connected)" ]; then
+          ${pkgs.coreutils}/bin/touch "$STAMP"
+          exit 0
+        fi
+
+        if [ ! -e "$STAMP" ]; then
+          ${pkgs.coreutils}/bin/touch "$STAMP"
+          exit 0
+        fi
+
+        if [ -n "$(${pkgs.findutils}/bin/find "$STAMP" -mmin +10)" ]; then
+          "$BTCTL" power off
+          ${pkgs.coreutils}/bin/rm -f "$STAMP"
+        fi
+      ''}";
+    };
+  };
+
+  systemd.user.timers.bt-idle-poweroff = lib.mkIf (!isDarwin && hasBluetooth) {
+    Unit = {
+      Description = "Periodic Bluetooth idle check";
+    };
+    Timer = {
+      OnStartupSec = "2min";
+      OnUnitActiveSec = "1min";
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
     };
   };
 
