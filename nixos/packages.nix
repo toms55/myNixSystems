@@ -17,7 +17,7 @@
     gemini-cli
     claude-code
     gcc
-    vscode
+    vscode-fhs
 
     gamemode
 
