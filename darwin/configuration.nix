@@ -37,7 +37,8 @@
     neovim
     git
     alacritty
-    
+    claude-code
+   
     tree
   ];
 

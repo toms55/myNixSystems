@@ -51,7 +51,80 @@ in {
   # unconditionally instead of failing on the leftover.
   xdg.configFile."alacritty/alacritty.toml".force = true;
 
-  home.packages = [ pkgs.neovim pkgs.tmux ];
+  programs.tmux = {
+    enable = true;
+    mouse = false;
+    escapeTime = 0;
+    historyLimit = 50000;
+    baseIndex = 1;
+    keyMode = "vi";
+    terminal = "tmux-256color";
+
+    extraConfig = ''
+      set -g focus-events on
+      set -ag terminal-overrides ",xterm-256color:RGB"
+
+      # Windows/panes numbered from 1, like awesome's tags
+      setw -g pane-base-index 1
+      set -g renumber-windows on
+
+      # vi-style status keys (mode-keys handled by keyMode above)
+      set -g status-keys vi
+
+      # j/k cycle pane focus (matches awesomewm's modkey+j/k client cycling)
+      bind j select-pane -t :.+
+      bind k select-pane -t :.-
+
+      # Shift+hjkl to resize panes
+      bind -r H resize-pane -L 5
+      bind -r J resize-pane -D 5
+      bind -r K resize-pane -U 5
+      bind -r L resize-pane -R 5
+
+      # Shift+h/l to move windows left/right (mirrors awesome's modkey+shift swap)
+      bind -r < swap-window -t -1 \; previous-window
+      bind -r > swap-window -t +1 \; next-window
+
+      # Splits that keep the current path (both the defaults and the mnemonic keys)
+      bind | split-window -h -c "#{pane_current_path}"
+      bind % split-window -h -c "#{pane_current_path}"
+      bind - split-window -v -c "#{pane_current_path}"
+      bind '"' split-window -v -c "#{pane_current_path}"
+
+      # New window in the current path
+      bind c new-window -c "#{pane_current_path}"
+
+      # Reload config
+      bind r source-file ~/.config/tmux/tmux.conf \; display-message "tmux config reloaded"
+
+      # Minimal monochrome status bar, matching awesome's #333333 borders
+      set -g status-style "bg=#1a1a1a,fg=#888888"
+      set -g status-left ""
+      set -g status-right "#[fg=#555555]%H:%M"
+      set -g status-justify left
+      setw -g window-status-current-style "fg=#e0e0e0,bold"
+      setw -g window-status-format " #I:#W "
+      setw -g window-status-current-format " #I:#W "
+      set -g pane-border-style "fg=#333333"
+      set -g pane-active-border-style "fg=#555555"
+      set -g status-position bottom
+
+      # Session persistence (tmux-resurrect + tmux-continuum).
+      set -g @resurrect-capture-pane-contents 'on'
+      set -g @resurrect-strategy-nvim 'session'
+      set -g @continuum-save-interval '15'
+      set -g @continuum-restore 'on'
+
+      # MUST stay last: continuum reads @continuum-restore and appends its autosave
+      # hook to status-right at load, so plugins must load after every option and
+      # status-right line above. (Home Manager's `plugins` list loads them before
+      # extraConfig, which would break this — hence the manual run-shell here.)
+      run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux
+      run-shell ${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux
+    '';
+  };
+
+  home.packages = [ pkgs.neovim ];
 
   home.sessionVariables.EDITOR = "nvim";
 
@@ -138,15 +211,5 @@ in {
     ".config/awesome/rc.lua" = lib.mkIf (!isDarwin) {
       source = ./config/awesome/rc.lua;
     };
-    ".tmux.conf" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/myNixSystems/config/tmux/tmux.conf";
-    };
-    # Plugin loader kept out of tmux.conf so the hand-edited config stays free of
-    # store paths. tmux.conf source-files this as its very last line: continuum
-    # hooks itself into status-right, so it must load after status-right is set.
-    ".config/tmux/nix-plugins.conf".text = ''
-      run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux
-      run-shell ${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux
-    '';
   };
 }
