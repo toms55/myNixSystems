@@ -124,6 +124,17 @@ in {
     '';
   };
 
+  programs.claude-code = {
+    enable = true;
+    context = ./config/ai/instructions.md;
+  };
+
+  programs.antigravity-cli = {
+    enable = true;
+    package = pkgs.gemini-cli;
+    context.GEMINI = ./config/ai/instructions.md;
+  };
+
   home.packages = [ pkgs.neovim ];
 
   home.sessionVariables.EDITOR = "nvim";

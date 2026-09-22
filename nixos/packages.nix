@@ -14,8 +14,6 @@
     lua
     luajit
     fastfetch
-    gemini-cli
-    claude-code
     gcc
     vscode-fhs
 
