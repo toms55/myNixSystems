@@ -189,7 +189,10 @@ awful.rules.rules = {
         keys = clientkeys,
         screen = awful.screen.preferred,
         placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-        titlebars_enabled = false
+        titlebars_enabled = false,
+        maximized = false,
+        maximized_horizontal = false,
+        maximized_vertical = false
       }
     },
     -- Gaming rule
