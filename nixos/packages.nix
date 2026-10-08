@@ -9,6 +9,7 @@
     ripgrep
     nodejs
     python3
+    pyright
     tree-sitter
     tree
     lua
