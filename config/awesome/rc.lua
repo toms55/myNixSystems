@@ -147,7 +147,16 @@ globalkeys = gears.table.join(
     -- Screenshot
     awful.key({}, "Print", function () 
         awful.spawn.with_shell("scrot -s 'screenshot-%Y-%m-%d-%H-%M-%S.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f'") 
-    end, {description = "screenshot to clipboard", group = "screenshot"})
+    end, {description = "screenshot to clipboard", group = "screenshot"}),
+
+    -- Restore the last minimised client
+    awful.key({ modkey }, "u", function ()
+        local c = awful.client.restore()
+        if c then
+            c:raise()
+            client.focus = c
+        end
+    end, {description = "restore minimised client", group = "client"})
 )
 
 clientkeys = gears.table.join(
